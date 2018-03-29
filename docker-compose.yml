@@ -1,0 +1,69 @@
+version: '2'
+
+services:
+  scrapy:
+    build:
+      context: scrapy/
+      args:
+        AppMajorVersion: "3"
+        AppMinorVersion: "1"
+    image: cmccb2b/scrapy:3.1
+    container_name: scrapy
+    restart: always
+
+    networks:
+      - backend_net
+    expose:
+      - 6800
+    ports:
+      - "6800:6800"
+
+    # Notice: check this user_date volume
+    volumes:
+      - log_volume:/app/logs
+
+  flask:
+    build:
+      context: flask/
+      args:
+        AppMajorVersion: "0"
+        AppMinorVersion: "4"
+    image: cmccb2b/flask:0.4
+    container_name: flask
+    restart: always
+
+    networks:
+      - frontend_net
+    expose:
+      - 80
+    ports:
+      - "80:80"
+    environment:
+      - FLASK_APP=app/main.py
+      - FLASK_DEBUG=1
+      - 'RUN=flask run --host=0.0.0.0 --port=80'
+
+  crontab:
+    build:
+      context: crontab/
+    image: cmccb2b/crontab:1.1
+    container_name: crontab
+    restart: always
+    depends_on:
+      - flask
+
+    networks:
+      - backend_net
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./crontab/config/config.json:/opt/crontab/config.json:rw
+
+networks:
+  frontend_net:
+    external: true
+  backend_net:
+    external: true
+
+volumes:
+  log_volume:

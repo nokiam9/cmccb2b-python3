@@ -1,0 +1,21 @@
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# My develop directory
+workspace
+venv
+
+# Data Volume
+data
+
+# My configurations:
+db.ini
+deploy_key_rsa
+
+# Pycharm
+.idea
