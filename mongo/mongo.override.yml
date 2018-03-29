@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+  mongo:
+    # expose for runtime, open ports only for develop in override.yml
+    ports:
+      - "27017:27017"

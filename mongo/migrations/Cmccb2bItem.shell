@@ -1,0 +1,12 @@
+# /bin/bash
+
+# export table
+mongoexport -d cmccb2b -c Cmccb2bItem -o Cmccb2bItem.json
+gzip Cmccb2bItem.json
+
+# import table && add indexes for flask
+cat Cmccb2bItem.json.sample.gz| gzip -d |mongoimport -d cmccb2b -c Cmccb2bItem --drop
+mongo add_index.js
+
+# transfer utctime plus 8 hours -- Optional
+# mongo transfer_utctime_plus_8hours.js

@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  mongo:
+    image: mongo:3.6
+    container_name: mongo
+
+    networks:
+      - frontend_net
+      - backend_net
+    expose:
+      - 27017
+
+    # Notice: check this user_date volume
+    volumes:
+      - ../data/db:/data/db
+      - ./scripts:/data/scripts:ro
+      - ./migrations:/data/migrations:ro
+
+networks:
+  frontend_net:
+    external: true
+  backend_net:
+    external: true
