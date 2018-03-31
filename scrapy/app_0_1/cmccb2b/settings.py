@@ -66,6 +66,7 @@ ROBOTSTXT_OBEY = False          # ignore scrapy limited setting of website
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'cmccb2b.pipelines.Cmccb2bPipeline': 300,
+    # 'cmccb2b.pipelines.JsonWriterPipeline': 400
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -95,16 +96,16 @@ MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://loc
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称
 MONGODB_COLLECTION = 'bid_notices'          # 必须的，表空间名称
 
-# MONGODB_SEPARATE_COLLECTIONS =            # 未启用，支持每个spider插入不同的collection
+# MONGODB_SEPARATE_COLLECTIONS =            # 未开发，支持每个spider插入不同的collection
 MONGODB_UNIQUE_KEY = 'id'                   # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
-MONGODB_STOP_ON_DUPLICATE = 10              # 可选的，＝0：不会停止爬取，<0：报错退出
+MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬取，<0：报错退出
 
 # Todo: Define for scrapy.mail
-MAIL_FROM = '13901214002@139.com'           #
-MAIL_HOST = 'smtp.139.com'		    	    # 使用的邮箱的smtp服务器地址，这里是163的smtp地址
-MAIL_PORT = 465                             # 25-SMTP, 465-SMTPS（SMTP-over-SSL）
-MAIL_USER = '13901214002@139.com'		    # 发件人的用户名
-MAIL_PASS = 'eos5d3'			            # 密码
-MAIL_TLS = True                             # 强制使用STARTTLS
-MAIL_SSL = True                             # 强制使用SSL加密连接
+# MAIL_FROM = '13901214002@139.com'           #
+# MAIL_HOST = 'smtp.139.com'		    	    # 使用的邮箱的smtp服务器地址，这里是163的smtp地址
+# MAIL_PORT = 465                             # 25-SMTP, 465-SMTPS（SMTP-over-SSL）
+# MAIL_USER = '13901214002@139.com'		    # 发件人的用户名
+# MAIL_PASS = 'eos5d3'			            # 密码
+# MAIL_TLS = True                             # 强制使用STARTTLS
+# MAIL_SSL = True                             # 强制使用SSL加密连接
 

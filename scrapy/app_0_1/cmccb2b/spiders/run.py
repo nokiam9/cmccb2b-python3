@@ -3,4 +3,4 @@
 from scrapy import cmdline
 
 
-cmdline.execute('scrapy crawl bidnotice'.split())
+cmdline.execute('scrapy crawl bidnotice --loglevel=INFO '.split())

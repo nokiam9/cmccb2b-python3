@@ -12,14 +12,16 @@ from scrapy.exceptions import DropItem
 
 
 class Cmccb2bPipeline(object):
+    """ Standard scrapy mongo pipeline, config by settings.py """
     def __init__(self):
+        """ Construct """
         self.logger = logging.getLogger(__name__)
         self.collection = None
         self.stop_on_duplicate = 0
         self.duplicate_key_count = 0
 
     def open_spider(self, spider):
-        # Connect to MongoDB, get settings from spider.crawler
+        """ Connect to MongoDB, get settings from spider.crawler """
         uri = spider.settings['MONGODB_URI']
         client = MongoClient(uri, connect=False)  # Notice: set connection for fork unsafe
         try:
@@ -28,7 +30,7 @@ class Cmccb2bPipeline(object):
             self.logger.info(u'Connected to MongoDB, uri={0}.'.format(uri))
         except ConnectionFailure:
             self.logger.error(u'Connect MongoDB sever failed! uri={0}.'.format(uri))
-            raise MongoConnectFailure   # Todo: unsupported raise failure
+            raise MongoConnectFailure   # TODO: unsupported raise failure
 
         database = client[spider.settings['MONGODB_DATABASE']]
         self.collection = database[spider.settings['MONGODB_COLLECTION']]
@@ -44,19 +46,20 @@ class Cmccb2bPipeline(object):
                 self.logger.info(u'Create unique index for key {0}'.format(unique_key))
             except DuplicateKeyError:
                 self.logger.error(u'Create unique index failed! key={0}'.format(unique_key))
-                raise MongoIndexFailure   # Todo: unsupported raise failure
+                raise MongoIndexFailure   # TODO: unsupported raise failure
 
         # Get the duplicate on key option
         self.stop_on_duplicate = spider.settings.getint('MONGODB_STOP_ON_DUPLICATE')
         if self.stop_on_duplicate < 0:
             self.logger.error(u'Negative values are not allowed for MONGODB_STOP_ON_DUPLICATE.')
-            raise SyntaxError     # Todo, exception unsupported
+            raise SyntaxError     # TODO： exception unsupported
 
     def close_spider(self, spider):
+        """ Close Spider， don't need to close mongo connect """
         self.logger.info(u'Spider will be closed, current_page={0}.'.format(spider.current_page))
 
     def process_item(self, item, spider):
-        """ Insert item into  mongo, stop when too many duplicate keys """
+        """ Insert item into mongo, stop when too many duplicate keys """
         try:
             self.collection.insert_one(dict(item))
             self.logger.debug(u'Stored one item in MongoDB.')
@@ -72,7 +75,7 @@ class Cmccb2bPipeline(object):
                         spider,
                         'Number of duplicate key insertion exceeded'
                     )
-                else:
-                    raise DropItem
+                # else:
+                #     raise DropItem
         return item
 
