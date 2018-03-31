@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = False          # ignore scrapy limited setting of website
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'cmccb2b.pipelines.Cmccb2BPipeline': 300,
+    'cmccb2b.pipelines.Cmccb2bPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -90,19 +90,14 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # Defined for scrapy mongodb
-MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，为了支持Replication Server，不再使用host：port的方式
-# MONGODB_REPLICA_SET =                     # 未启用，配置Replication Server
-# MONGODB_FSYNC =                           # 未启用
-# MONGODB_REPLICA_SET_W =                   # 未启用
-
+# URI: mongodb://[username:password@]host1[:port1],...[,hostN[:portN]]][/[database][?options]]
+MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://localhost:27017
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称
 MONGODB_COLLECTION = 'bid_notices'          # 必须的，表空间名称
-# MONGODB_SEPARATE_COLLECTIONS =            # 未启用，支持每个spider插入不同的collection
 
+# MONGODB_SEPARATE_COLLECTIONS =            # 未启用，支持每个spider插入不同的collection
 MONGODB_UNIQUE_KEY = 'id'                   # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
 MONGODB_STOP_ON_DUPLICATE = 10              # 可选的，＝0：不会停止爬取，<0：报错退出
-# MONGODB_BUFFER_DATA =                     # 不适用，批处理插入方式存在bug
-# MONGODB_ADD_TIMESTAMP = True              # 不适用，timestamp影响唯一索引，且默认UTC0
 
 # Todo: Define for scrapy.mail
 MAIL_FROM = '13901214002@139.com'           #

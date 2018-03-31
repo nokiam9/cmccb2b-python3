@@ -71,10 +71,11 @@ class BidNoticeSpider(scrapy.Spider):
                                self.current_page, tr.extract())
             else:
                 # Get context from another parse and append field in item[]
-                yield scrapy.Request(
-                      self.notice_context_url+str(item['id']),
-                      meta={'item': item},
-                      callback=self.parse_of_context)
+                # yield scrapy.Request(
+                #       self.notice_context_url+str(item['id']),
+                #       meta={'item': item},
+                #       callback=self.parse_of_context)
+                item['notice_url'] = self.notice_context_url + str(item['id'])  # Todo: 多任务ID重复，继续调试
                 rec += 1
                 yield item
 
