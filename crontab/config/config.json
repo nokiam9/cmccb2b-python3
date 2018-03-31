@@ -1,0 +1,7 @@
+[
+  {
+    "comment": "curl scrapyd:6800",
+    "schedule": "53 * * * *",
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bidnotice "
+  }
+]
