@@ -5,8 +5,8 @@
 apt update
 apt install git
 cd /
-git clone https://github.com/nokiam9/cmccb2b_runtime.git
-mv cmccb2b_runtime app
+git clone https://github.com/nokiam9/cmccb2b_python3.git
+mv cmccb2b_python3 app
 cd /app
 sh setup.sh
 eof
@@ -27,16 +27,16 @@ sudo apt install mongodb-clients
 echo "Install gzip......"
 sudo apt install gzip
 
-echo "Prepare UserData ......"
+echo "Prepare data volume ......"
 cd /app
-mkdir UserData
-mkdir UserDdata/db UserData/logs
+mkdir data
+mkdir data/db
 
 echo "Prepare environment for start......"
 sh prestart.sh
 
 echo "Migration mongo db data......"
-cd /app/utils/migrations
+cd /app/mongo/migrations
 cat BidNotice.json.sample.gz| gzip -d | mongoimport -d cmccb2b -c BidNotice --drop
 mongo add_index.js
 

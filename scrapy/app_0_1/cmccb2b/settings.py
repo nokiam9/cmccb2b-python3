@@ -94,13 +94,13 @@ ITEM_PIPELINES = {
 # URI: mongodb://[username:password@]host1[:port1],...[,hostN[:portN]]][/[database][?options]]
 MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://localhost:27017
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称
-MONGODB_COLLECTION = 'BidNotice'           # 必须的，表空间名称
+MONGODB_COLLECTION = 'BidNotice'            # 必须的，表空间名称
 
 # MONGODB_SEPARATE_COLLECTIONS =            # 未开发，支持每个spider插入不同的collection
 MONGODB_UNIQUE_KEY = 'id'                   # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
-MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬取，<0：报错退出
+MONGODB_STOP_ON_DUPLICATE = 20               # 可选的，＝0：不会停止爬取，<0：报错退出
 
-# Todo: Define for scrapy.mail
+# TODO: Define for scrapy.mail
 # MAIL_FROM = '13901214002@139.com'           #
 # MAIL_HOST = 'smtp.139.com'		    	    # 使用的邮箱的smtp服务器地址，这里是163的smtp地址
 # MAIL_PORT = 465                             # 25-SMTP, 465-SMTPS（SMTP-over-SSL）

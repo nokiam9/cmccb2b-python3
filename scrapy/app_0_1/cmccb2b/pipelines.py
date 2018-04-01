@@ -13,6 +13,16 @@ from scrapy.exceptions import DropItem
 
 class Cmccb2bPipeline(object):
     """ Standard scrapy mongo pipeline, config by settings.py """
+    # Default settings of config
+    config = {
+        'uri': 'mongodb://localhost:27017',
+        'database': 'scrapy',
+        'collection': 'items',
+        'separate_collections': False,
+        'unique_key': None,
+        'stop_on_duplicate': 0,
+    }
+
     def __init__(self):
         """ Construct """
         self.logger = logging.getLogger(__name__)
@@ -39,7 +49,7 @@ class Cmccb2bPipeline(object):
                 spider.settings['MONGODB_COLLECTION']))
 
         # Get collection and create unique index
-        unique_key = spider.settings['MONGODB_UNIQUE_KEY']
+        unique_key = spider.settings['MONGODB_UNIQUE_KEY']      # TODO: bug fix
         if unique_key:
             try:
                 self.collection.create_index(unique_key, unique=True)
@@ -75,7 +85,45 @@ class Cmccb2bPipeline(object):
                         spider,
                         'Number of duplicate key insertion exceeded'
                     )
-                # else:
-                #     raise DropItem
+                else:
+                    raise DropItem
         return item
+
+    def _from_settings(self, settings):
+        # Set all regular options
+        options = [
+            ('uri', 'MONGODB_URI'),
+            ('database', 'MONGODB_DATABASE'),
+            ('collection', 'MONGODB_COLLECTION'),
+            ('separate_collections', 'MONGODB_SEPARATE_COLLECTIONS'),
+            ('unique_key', 'MONGODB_UNIQUE_KEY'),
+            ('stop_on_duplicate', 'MONGODB_STOP_ON_DUPLICATE')
+        ]
+
+        # get config value from settings
+        for k, v in options:
+            if settings[v] and settings[v] != '':
+                self.config[k] = settings[v]
+
+        if not isinstance(self.config['stop_on_duplicate'], int):  # not number
+            self.config['stop_on_duplicate'] = 0
+            self.logger.warning(u"MONGODB_STOP_ON_DUPLICATE isn't type int, set default value with 0.")
+        elif self.config['stop_on_duplicate'] < 0:
+            self.logger.warning(u"MONGODB_STOP_ON_DUPLICATE < 0, set default value with 0.")
+
+        v = self.config['unique_key']
+        if not isinstance(v, str):
+            if isinstance(v, list) or isinstance(v, tuple):
+                for x in v:
+                    if not isinstance(x, tuple) or len(x) != 2:
+                        self.logger.warning(u"Value of MONGODB_UNIQUE_KEY with incorrect format，ignore this setting!")
+                        del self.config['unique_key']
+                        break
+            else:
+                self.logger.warning(u"Value of MONGODB_UNIQUE_KEY with incorrect format，ignore this setting!")
+                del self.config['unique_key']
+
+        return
+
+
 
