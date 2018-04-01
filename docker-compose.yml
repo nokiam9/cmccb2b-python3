@@ -5,9 +5,9 @@ services:
     build:
       context: scrapy/
       args:
-        AppMajorVersion: "3"
+        AppMajorVersion: "0"
         AppMinorVersion: "1"
-    image: cmccb2b/scrapy:3.1
+    image: cmccb2b/scrapy:0.1
     container_name: scrapy
     restart: always
 

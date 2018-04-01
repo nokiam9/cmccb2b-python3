@@ -2,7 +2,7 @@ var i=0;
 var j=0;
 var db = db.getSisterDB("cmccb2b");
 
-db.Cmccb2bItem.find().forEach(
+db.BidNotice.find().forEach(
     function(x) {
         // print(x.title);
         // print(x.crawled_time);

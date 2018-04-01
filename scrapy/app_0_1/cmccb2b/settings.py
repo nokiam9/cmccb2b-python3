@@ -94,7 +94,7 @@ ITEM_PIPELINES = {
 # URI: mongodb://[username:password@]host1[:port1],...[,hostN[:portN]]][/[database][?options]]
 MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://localhost:27017
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称
-MONGODB_COLLECTION = 'bid_notices'          # 必须的，表空间名称
+MONGODB_COLLECTION = 'BidNotice'           # 必须的，表空间名称
 
 # MONGODB_SEPARATE_COLLECTIONS =            # 未开发，支持每个spider插入不同的collection
 MONGODB_UNIQUE_KEY = 'id'                   # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］

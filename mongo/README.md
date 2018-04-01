@@ -31,7 +31,7 @@ mongoimport -d cmccb2b -c Cmccb2bItem --drop < Cmccb2bItem.json
 # 进入mongo容器
 docker exec -it mongo /bin/bash
 # 在容器内调用mongo客户端，并启动脚本文件
-mongo < group_by_crawled_time.js
+mongo < group_by_timestamp.js
 ```
 
 
