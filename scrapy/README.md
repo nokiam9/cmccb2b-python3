@@ -1,4 +1,4 @@
-## Docker scrapy from scrapy ##
+## Docker scrapy based on scrapy app ##
 
 ### 概述 ###
 - 在scrapy app的基础上，集成了[scrapyd](http://scrapyd.readthedocs.io/en/stable/)以支持docker启动方式,

@@ -1,5 +1,5 @@
 db = db.getSisterDB("cmccb2b");
 db.BidNotice.createIndex(
-    {'published_date': -1, 'crawled_time': -1}
+    {'published_date': -1, 'timestamp': -1}
     );
-printjson(db.Cmccb2bItem.getIndexes());
+printjson(db.BidNotice.getIndexes());

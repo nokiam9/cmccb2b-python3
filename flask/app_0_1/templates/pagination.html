@@ -1,0 +1,72 @@
+{# Macro for creating navigation links #}
+{% macro render_navigation(pagination, endpoint) %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        {% for page in pagination.iter_pages() %}
+        <!--pagination.iter_pages()返回当前的可用页面列表，而不是全部pages，-->
+        <!--    默认参数: left_edge=2, left_current=2, right_current=5, right_edge=2 -->
+        {% if page %}
+        <!--如果不是当前页，正常显示链接，否则显示数字但链接不可用，，而如果页面列表的当前值为None，则显示... -->
+        {% if page != pagination.page %}
+        <li class="page-item"><a class="page-link" onclick="gotoPage({{page}})">{{page}}</a></li>
+        {% else %}
+        <li class="page-item active"><a class="page-link">{{ page }}</a></li>
+        {% endif %}
+        {% else %}
+        <li class="page-item disabled"><a class="page-link">......</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+{% endmacro %}
+
+{% block body %}
+
+<div class="List of bid notice table-responsive-sm ">
+    <table class="table table-hover table-bordered text-center text-nowrap">
+        <thead class="table-dark">
+        <tr>
+            <th>
+                招标单位
+            </th>
+            <th>
+                项目名称
+            </th>
+            <th>
+                发布日期
+            </th>
+            <th>
+                爬取时间
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for todo in todos_page.items %}
+        {% if todo.reminded_time is none %}
+            <tr onclick="selectResult('{{todo.id}}')" class="text-info" >
+            {% else %}
+            <tr onclick="selectResult('{{todo.id}}')" >
+            {% endif %}
+            <td>
+                {{todo.source_ch}}
+            </td>
+            <td>
+                {{todo.title}}
+            </td>
+            <td>
+                {{todo.published_date.strftime('%Y-%m-%d')}}
+            </td>
+            <td>
+                {{todo.timestamp.strftime('%Y-%m-%d %H:%m:%S')}}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="navigation">
+    {{ render_navigation(todos_page, 'pagination') }}
+</div>
+
+{% endblock %}

@@ -1,0 +1,3 @@
+nose
+rednose
+flask_mongoengine==0.9.3

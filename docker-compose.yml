@@ -7,7 +7,7 @@ services:
       args:
         AppMajorVersion: "0"
         AppMinorVersion: "1"
-    image: cmccb2b/scrapy:0.1
+    image: cmccb2b/scrapy:0.1-python3.6
     container_name: scrapy
     restart: always
 
@@ -27,8 +27,8 @@ services:
       context: flask/
       args:
         AppMajorVersion: "0"
-        AppMinorVersion: "4"
-    image: cmccb2b/flask:0.4
+        AppMinorVersion: "1"
+    image: cmccb2b/flask:0.1-python3.6
     container_name: flask
     restart: always
 
