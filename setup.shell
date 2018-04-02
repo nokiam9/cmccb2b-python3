@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Git clone && pre setup.sh
+# Git clone && pre setup.shell
 :<<eof
 apt update
 apt install git
@@ -8,7 +8,7 @@ cd /
 git clone https://github.com/nokiam9/cmccb2b_python3.git
 mv cmccb2b_python3 app
 cd /app
-sh setup.sh
+sh setup.shell
 eof
 
 echo "Install docker......"

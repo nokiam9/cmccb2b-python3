@@ -97,8 +97,8 @@ MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称
 MONGODB_COLLECTION = 'BidNotice'            # 必须的，表空间名称
 
 # MONGODB_SEPARATE_COLLECTIONS =            # 未开发，支持每个spider插入不同的collection
-MONGODB_UNIQUE_KEY = 'id'                   # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
-MONGODB_STOP_ON_DUPLICATE = 20               # 可选的，＝0：不会停止爬取，<0：报错退出
+MONGODB_UNIQUE_KEY = [('id', 1)]            # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
+MONGODB_STOP_ON_DUPLICATE = 19              # 可选的，＝0：不会停止爬取，<0：报错并复位为0
 
 # TODO: Define for scrapy.mail
 # MAIL_FROM = '13901214002@139.com'           #

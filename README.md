@@ -17,6 +17,10 @@
 - `prestart.sh`: 预启动程序，负责设置network并启动mongo，*注意：在启动docker-compose前，必须运行该程序*
 - `docker-compose.yml`:主启动程序，自动加载scrapy，flask和crontab容器
 - `.gitignore`：设置不需要上传Github的文件类型
+- `setup.shell`：生产环境的安装示例文件
+- `README-python2.md`：基于python2.7的自述文件
+- `README.md`: 本文件
+
 
 ### 注意事项 ###
 - GitHub上传不含`user_date/`目录，需要手工设置yml文件中的volume
