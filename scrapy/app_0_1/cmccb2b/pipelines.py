@@ -41,8 +41,8 @@ class Cmccb2bPipeline(object):
             client.admin.command('ismaster')
             self.logger.info(u'Connected to MongoDB, uri={0}.'.format(uri))
         except (InvalidURI, ConnectionFailure):
-            self.logger.error(u'Connect MongoDB sever failed! uri={0}.'.format(uri))
-            raise MongoConnectFailure   # TODO: unsupported raise failure
+            self.logger.error(u'Connect MongoDB sever failed and abort now! uri={0}.'.format(uri))
+            raise MongoConnectFailure   # TODO: unsupported raise exception
 
         database = client[self.config['database']]
         self.collection = database[self.config['collection']]
@@ -57,10 +57,10 @@ class Cmccb2bPipeline(object):
                 self.collection.create_index(unique_key, unique=True)
                 self.logger.info(u'Create unique index with key={0}'.format(unique_key))
             except (DuplicateKeyError, OperationFailure):
-                self.logger.error(u'Failed to create unique index! key={0}'.format(unique_key))
-                raise MongoIndexFailure   # TODO: unsupported raise failure
+                self.logger.error(u'Failed to create unique index and abort now! key={0}'.format(unique_key))
+                raise MongoIndexFailure   # TODO: unsupported raise exception
         else:
-            self.logger.info(u'Ignore unique index setting...')
+            self.logger.info(u'Pipeline without unique index...')
 
         # Get the duplicate on key option
         self.stop_on_duplicate = self.config['stop_on_duplicate']   # if data error, reset with 0
