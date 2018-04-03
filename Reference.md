@@ -36,6 +36,7 @@
 ### 杂七杂八 ###
 - [Mongo Shell](https://docs.mongodb.com/manual/mongo/)
 - [Pymongo/3.6](http://api.mongodb.com/python/current/index.html)
+- [Nginx配置方法](http://seanlook.com/2015/05/17/nginx-install-and-config/)
 
 
 
