@@ -8,3 +8,5 @@ COPY ./app_${AppMajorVersion}_${AppMinorVersion} /app
 
 WORKDIR /app
 RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+COPY scrapyd_proxy.conf /etc/nginx/conf.d/

@@ -15,8 +15,8 @@ services:
       - backend_net
     expose:
       - 6800
-    ports:
-      - "6800:6800"
+#    ports:
+#      - "6800:6800"
 
     # Notice: check this user_date volume
     volumes:
@@ -34,10 +34,13 @@ services:
 
     networks:
       - frontend_net
-    expose:
-      - 80
+      - backend_net
+#    expose:
+#      - 80
+#      - 6800
     ports:
       - "80:80"
+      - "6800:6800"
     environment:
       - FLASK_APP=app/main.py
       - FLASK_DEBUG=1
