@@ -2,7 +2,7 @@
 
 ### 安装方式（基于GitHub） ###
 1. 将本地开发环境上传GitHub
-2. 生产机（已安装docker，python3.6）并在安装clone源代码`git clone xxxx`
+2. 生产机（已安装docker，python3.6不是必须的）并在安装clone源代码`git clone xxxx`
 3. 新建`data/`数据目录，并用migration脚本迁移mongo DB数据
 4. 启动预安装程序`sh prestart.sh`，并启动主程序`docker-compose up -d --build`
 5. 浏览器远程访问<www.caogo.cn>  或者 <a href="http://47.52.226.119">47.52.226.119</a>  

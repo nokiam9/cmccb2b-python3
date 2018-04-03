@@ -1,17 +1,9 @@
-# Python:
-*.py[cod]
-*.so
-*.egg
-*.egg-info
-dist
-build
-
 # My develop directory
-workspace
-venv
+workspace/
+venv/
 
 # Data Volume
-data
+data/
 
 # My configurations:
 db.ini
@@ -19,3 +11,14 @@ deploy_key_rsa
 
 # Pycharm
 .idea
+
+# Mac OS
+.DS_Store
+
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
