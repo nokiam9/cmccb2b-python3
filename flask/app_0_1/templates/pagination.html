@@ -23,8 +23,8 @@
 {% block body %}
 
 <div class="List of bid notice table-responsive-sm ">
-    <h4>{{title}} 列表 总记录数: {{todos_page.total}}</h4>
-    <table class="table table-hover table-bordered text-center text-nowrap">
+    <h4 class="">{{title}} 列表</h4>
+    <table class="table table-hover text-center text-nowrap table-bordered">
         <thead class="table-dark">
         <tr>
             <th>
@@ -44,9 +44,9 @@
         <tbody>
         {% for todo in todos_page.items %}
         {% if todo.reminded_time is none %}
-        <tr onclick="selectResult('{{todo.id}}')" class="text-info">
+        <tr onclick="selectResult('{{todo.id}}')" class="text-info small">
             {% else %}
-        <tr onclick="selectResult('{{todo.id}}')">
+        <tr onclick="selectResult('{{todo.id}}') " class="small">
             {% endif %}
             <td>
                 {{todo.source_ch}}
@@ -67,6 +67,7 @@
 </div>
 
 <div class="navigation">
+    <h6 class="border-left small text-muted"> 总记录数: {{todos_page.total}}</h6>
     {{ render_navigation(todos_page, 'pagination') }}
 </div>
 
