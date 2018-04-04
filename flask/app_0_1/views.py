@@ -30,8 +30,8 @@ def pageview(collection_name):
 
     return render_template('pagination.html',
                            todos_page=todos_page,
-                           title=title,
-                           rec_count=document.objects.count())
+                           collection_name=collection_name,
+                           title=title)
 
 
 def hello():

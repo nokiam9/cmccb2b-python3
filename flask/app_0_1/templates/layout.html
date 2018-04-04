@@ -17,10 +17,11 @@
 
     <!-- 开始定义ajax -->
     <script type=text/javascript src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.14.0/esm/popper.js"></script>
     <script language="javascript">
-        function doSearchByPage(pageNo) {
+        function doSearchByPage(collection, pageNo) {
             <!-- 设置ajax页面的url地址-->
-            var url = "/pagination/bid_notice?page_id=" + pageNo;
+            var url = '/pagination/' + collection + '?page_id=' + pageNo;
             document.getElementsByName('currentPage')[0].value = pageNo;
 
             // 开始使用AJAX的POST方法从url中读取数据，并装入searchResult的元素
@@ -31,32 +32,27 @@
             }).done(function (responseData) {
                 $("#searchResult").html(responseData);
             }).fail(function (responseData) {
-                alert("error! url=" + url)
+                alert("error! url=" + url);
             });
-        };
-
-        function gotoPage(pageNo) {
-            document.getElementsByName('currentPage')[0].value = pageNo
-            doSearchByPage(pageNo);
         }
 
-        function selectResult(id) {
-            var uri = "https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id=" + id;
-            window.open(uri);
-
+        function selectCollection(collection) {
+            document.getElementsByName('currentCollection')[0].value = collection;
+            doSearchByPage(collection, 1);
         }
-    </script>
 
-    <script language="javascript">
+        //首次加载页面
         $(document).ready(
             function () {
-                doSearchByPage(1);
+                var collection = document.getElementsByName('currentCollection')[0].value;
+                doSearchByPage(collection, 1);
             }
         )
     </script>
 </head>
 
 <body>
+<!-- 定义顶部导航栏 -->
 <nav class="navbar navbar-dark navbar-expand-md bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">CMCC B2B</a>
@@ -74,11 +70,63 @@
 <!-- Define container-fluid && row for main layout -->
 <div class="container-fluid">
     <div class="row">
-        <!-- Define container-fluid && row for date view layout -->
+
+        <!-- 定义左侧导航栏 -->
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <!-- 隐藏元素，保存当前collection name，有默认值-->
+                <input type="hidden" name="currentCollection" value="bid_notice">
+                <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>表格方式</span>
+                </h5>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link active" onclick="selectCollection('bid_notice')">
+                            招标公告 <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="selectCollection('notice_result')">
+                            中标公示
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" onclick="selectCollection('notice_result')">
+                            假的公示
+                        </a>
+                    </li>
+                </ul>
+
+                <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>图形方式</span>
+                </h5>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <span data-feather="file-text"></span>
+                            招标公告
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <span data-feather="file-text"></span>
+                            中标公示
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <span data-feather="file-text"></span>
+                            假的公告
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- 定义主展示区，为AJAX页面预留位置 -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-
             <input type="hidden" name="currentPage" value="1">
-
+            <!-- Here is ajax named view. -->
             <div class="table-responsive" id="searchResult">
             </div>
         </main>

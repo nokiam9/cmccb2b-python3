@@ -8,7 +8,7 @@
         {% if page %}
         <!--如果不是当前页，正常显示链接，否则显示数字但链接不可用，，而如果页面列表的当前值为None，则显示... -->
         {% if page != pagination.page %}
-        <li class="page-item"><a class="page-link" onclick="gotoPage({{page}})">{{page}}</a></li>
+        <li class="page-item"><a class="page-link" onclick="gotoPage('{{collection_name}}', {{page}})">{{page}}</a></li>
         {% else %}
         <li class="page-item active"><a class="page-link">{{ page }}</a></li>
         {% endif %}
@@ -23,7 +23,7 @@
 {% block body %}
 
 <div class="List of bid notice table-responsive-sm ">
-    <h3>{{title}} 列表   总记录数: {{rec_count}}</h3>
+    <h4>{{title}} 列表 总记录数: {{todos_page.total}}</h4>
     <table class="table table-hover table-bordered text-center text-nowrap">
         <thead class="table-dark">
         <tr>
@@ -44,9 +44,9 @@
         <tbody>
         {% for todo in todos_page.items %}
         {% if todo.reminded_time is none %}
-            <tr onclick="selectResult('{{todo.id}}')" class="text-info" >
+        <tr onclick="selectResult('{{todo.id}}')" class="text-info">
             {% else %}
-            <tr onclick="selectResult('{{todo.id}}')" >
+        <tr onclick="selectResult('{{todo.id}}')">
             {% endif %}
             <td>
                 {{todo.source_ch}}
@@ -69,5 +69,17 @@
 <div class="navigation">
     {{ render_navigation(todos_page, 'pagination') }}
 </div>
+
+<script>
+    function selectResult(id) {
+        var uri = "https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id=" + id;
+        window.open(uri);
+    }
+
+    function gotoPage(collection, pageNo) {
+        document.getElementsByName('currentPage')[0].value = pageNo
+        doSearchByPage(collection, pageNo);
+    }
+</script>
 
 {% endblock %}
