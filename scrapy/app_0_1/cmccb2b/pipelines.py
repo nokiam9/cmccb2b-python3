@@ -58,7 +58,7 @@ class Cmccb2bPipeline(object):
         self.logger.info(u'Set stop_on_duplicate with {0}.'.format(self.stop_on_duplicate))
 
     def close_spider(self, spider):
-        """ Close Spider， don't need to close mongo connect """
+        """ Close Spider， no need to close mongo connect """
         self.logger.info(u'Spider will be closed, current_page={0}.'.format(spider.current_page))
 
     def process_item(self, item, spider):
@@ -74,12 +74,8 @@ class Cmccb2bPipeline(object):
                 self.duplicate_key_count += 1
                 if self.duplicate_key_count >= self.stop_on_duplicate:
                     # Notice: stop crawler when too many duplicate keys
-                    spider.crawler.engine.close_spider(
-                        spider,
-                        'Number of duplicate key insertion exceeded'
-                    )
-                else:
-                    raise DropItem
+                    spider.crawler.engine.close_spider(spider, 'Number of duplicate key insertion exceeded')
+                raise DropItem
         return item
 
     def _get_config(self, spider):
