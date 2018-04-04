@@ -19,7 +19,8 @@
     <script type=text/javascript src="/static/js/jquery-3.2.1.min.js"></script>
     <script language="javascript">
         function doSearchByPage(pageNo) {
-            var url = "/pagination?page_id=" + pageNo;
+            <!-- 设置ajax页面的url地址-->
+            var url = "/pagination/bid_notice?page_id=" + pageNo;
             document.getElementsByName('currentPage')[0].value = pageNo;
 
             // 开始使用AJAX的POST方法从url中读取数据，并装入searchResult的元素
