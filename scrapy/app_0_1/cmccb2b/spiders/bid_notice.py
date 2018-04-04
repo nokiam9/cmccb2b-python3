@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 class BidNoticeSpider(scrapy.Spider):
-    name = 'bidnotice'
-    notice_query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType=2'
-    notice_context_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='   # append with id(int)
+    name = 'bid_notice'
+    query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType=2'
+    context_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='   # append with id(int)
 
     current_page = 1
     page_size = 20
@@ -29,7 +29,7 @@ class BidNoticeSpider(scrapy.Spider):
 
     def start_requests(self):
         return [scrapy.FormRequest(
-            url=self.notice_query_url,
+            url=self.query_url,
             formdata=self.form_data,
             callback=self.parse
         )]
@@ -72,7 +72,7 @@ class BidNoticeSpider(scrapy.Spider):
                 rec += 1
                 # Get context from another parse and append field in item[]
                 yield scrapy.Request(
-                      url=self.notice_context_url+str(item['id']),
+                      url=self.context_url+str(item['id']),
                       meta={'item': item},
                       callback=self.parse_of_context)
 
@@ -89,7 +89,7 @@ class BidNoticeSpider(scrapy.Spider):
         # Notice: formdata fields must be str, int type will occur yield failed!!
         self.form_data['page.currentPage'] = str(self.current_page)
         yield scrapy.FormRequest(
-            url=self.notice_query_url,
+            url=self.query_url,
             formdata=self.form_data,
             callback=self.parse
         )

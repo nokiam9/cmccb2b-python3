@@ -13,26 +13,17 @@ from scrapy.exceptions import DropItem
 
 class Cmccb2bPipeline(object):
     """ Standard scrapy mongo pipeline, config by settings.py """
-    # Default settings of config
-    config = {
-        'uri': 'mongodb://localhost:27017',
-        'database': 'scrapy',
-        'collection': 'items',
-        'separate_collections': False,
-        'unique_key': None,
-        'stop_on_duplicate': 0,
-    }
-
     def __init__(self):
         """ Construct """
         self.logger = logging.getLogger(__name__)
+        self.config = {}
         self.collection = None
         self.stop_on_duplicate = 0
         self.duplicate_key_count = 0
 
     def open_spider(self, spider):
         """ Connect to MongoDB, get settings from spider.crawler """
-        self._get_settings(settings=spider.settings)
+        self._get_config(spider)
 
         uri = self.config['uri']
         client = MongoClient(uri, connect=False)  # Notice: set connection for fork unsafe
@@ -60,7 +51,7 @@ class Cmccb2bPipeline(object):
                 self.logger.error(u'Failed to create unique index and abort now! key={0}'.format(unique_key))
                 raise MongoIndexFailure   # TODO: unsupported raise exception
         else:
-            self.logger.info(u'Pipeline without unique index...')
+            self.logger.info(u'Pipeline mongo without unique index...')
 
         # Get the duplicate on key option
         self.stop_on_duplicate = self.config['stop_on_duplicate']   # if data error, reset with 0
@@ -91,21 +82,19 @@ class Cmccb2bPipeline(object):
                     raise DropItem
         return item
 
-    def _get_settings(self, settings):
-        # Set all regular options
-        options = [
-            ('uri', 'MONGODB_URI'),
-            ('database', 'MONGODB_DATABASE'),
-            ('collection', 'MONGODB_COLLECTION'),
-            ('separate_collections', 'MONGODB_SEPARATE_COLLECTIONS'),
-            ('unique_key', 'MONGODB_UNIQUE_KEY'),
-            ('stop_on_duplicate', 'MONGODB_STOP_ON_DUPLICATE')
-        ]
-
+    def _get_config(self, spider):
         # get config value from settings
-        for k, v in options:
-            if settings[v] and settings[v] != '':
-                self.config[k] = settings[v]
+        self.config['uri'] = spider.settings.get('MONGODB_URI', default='mongodb://localhost:12017')
+        self.config['database'] = spider.settings.get('MONGODB_DATABASE', default='scrapy')
+        self.config['collection'] = spider.settings.get('MONGODB_COLLECTION', default='items')
+        self.config['unique_key'] = spider.settings.get('MONGODB_UNIQUE_KEY', default='')
+        self.config['stop_on_duplicate'] = spider.settings.getint('MONGODB_STOP_ON_DUPLICATE', default=0)
+
+        # if set SEPARATE_COLLECTIONS, set collection with spider name, and ignore MONGODB_COLLECTION
+        if spider.settings.getbool('MONGODB_SEPARATE_COLLECTIONS', default=False):
+            if self.config['collection'] != spider.name:
+                self.config['collection'] = spider.name
+                self.logger.warning(u"Ignore MONGODB_COLLECTION for SEPARATE_COLLECTIONS=True！")
 
         v = self.config['stop_on_duplicate']
         if not isinstance(v, int) or v < 0:
@@ -123,8 +112,8 @@ class Cmccb2bPipeline(object):
             else:
                 self.logger.warning(u"Value of MONGODB_UNIQUE_KEY with incorrect format，ignore this setting!")
                 self.config['unique_key'] = ''
-
         return
+
 
 
 
