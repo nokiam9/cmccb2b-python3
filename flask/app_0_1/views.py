@@ -4,31 +4,34 @@ from flask import request, render_template, abort
 from models import BidNotice, NoticeResult
 
 collections = {
-    'bid_notice': BidNotice,
-    'notice_result': NoticeResult,
+    'bid_notice': (u'招标公告', BidNotice),
+    'notice_result': (u'中标公示', NoticeResult),
 }
 
 
 # 所有route的定义，采用add_url_rule（），而不是修饰符，便于将应用隐藏在views.py中
 def index():
-    # return render_template('layout.html', rec_count=Todo.objects.count())
-    return render_template('layout.html', rec_count=8888)   # TODO: fix it
+    return render_template('layout.html')
 
 
 def pageview(collection_name):
     page_num = request.args.get('page_id', default=1, type=int)
 
     try:
-        document = collections[collection_name]
+        title = collections[collection_name][0]
+        document = collections[collection_name][1]
     except KeyError:
-        abort(status=404)               # TODO: set error handle
+        abort(status=404)
 
-    # 为了解决order by排序时内存溢出的问题，安装脚本增加了按排序要求的索引
+    # 为了解决order by排序时内存溢出的问题，document的meta定义增加了index
     todos_page = document.objects.\
         order_by("-published_date", "-timestamp").\
         paginate(page=page_num, per_page=10)
 
-    return render_template('pagination.html', todos_page=todos_page)
+    return render_template('pagination.html',
+                           todos_page=todos_page,
+                           title=title,
+                           rec_count=document.objects.count())
 
 
 def hello():

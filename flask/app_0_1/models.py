@@ -7,7 +7,8 @@ db = MongoEngine()  # 初始化数据库连接db
 
 class BidNotice (db.Document):
     meta = {
-        'collection': 'bid_notice'     # set collection name here!
+        'collection': 'bid_notice',     # set collection name here!
+        'indexes': [("-published_date", "-timestamp")],
     }
     _id = db.StringField()  # 必须增加，不然打开已存在的table时会报错
     id = db.StringField()
@@ -23,7 +24,8 @@ class BidNotice (db.Document):
 
 class NoticeResult (db.Document):
     meta = {
-        'collection': 'notice_result'     # set collection name here!
+        'collection': 'notice_result',     # set collection name here!
+        'indexes': [("-published_date", "-timestamp")],
     }
     _id = db.StringField()  # 必须增加，不然打开已存在的table时会报错
     id = db.StringField()
