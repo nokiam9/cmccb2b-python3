@@ -1,6 +1,8 @@
 # My develop directory
 workspace/
 venv/
+docs/
+test/
 
 # Data Volume
 data/
