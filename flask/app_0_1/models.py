@@ -7,7 +7,7 @@ db = MongoEngine()  # 初始化数据库连接db
 
 class Todo (db.Document):
     meta = {
-        'collection': 'BidNotice'     # set collection name here!
+        'collection': 'bid_notice'     # set collection name here!
     }
     _id = db.StringField()  # 必须增加，不然打开已存在的table时会报错
     id = db.StringField()
