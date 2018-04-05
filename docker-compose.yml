@@ -12,13 +12,10 @@ services:
     restart: always
 
     networks:
-      - backend_net
+      - cmccb2b_net
     expose:
       - 6800
-#    ports:
-#      - "6800:6800"
 
-    # Notice: check this user_date volume
     volumes:
       - log_volume:/app/logs
 
@@ -33,11 +30,8 @@ services:
     restart: always
 
     networks:
-      - frontend_net
-      - backend_net
-#    expose:
-#      - 80
-#      - 6800
+      - cmccb2b_net
+
     ports:
       - "80:80"
       - "6800:6800"
@@ -56,17 +50,16 @@ services:
       - flask
 
     networks:
-      - backend_net
+      - cmccb2b_net
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./crontab/config/config.json:/opt/crontab/config.json:rw
 
 networks:
-  frontend_net:
+  cmccb2b_net:
     external: true
-  backend_net:
-    external: true
+
 
 volumes:
   log_volume:

@@ -6,19 +6,16 @@ services:
     container_name: mongo
 
     networks:
-      - frontend_net
-      - backend_net
+      - cmccb2b_net
     expose:
       - 27017
 
     # Notice: check this user_date volume
     volumes:
-      - ../data/db:/data/db
+      - ../../data/db:/data/db
       - ./scripts:/data/scripts:ro
       - ./migrations:/data/migrations:ro
 
 networks:
-  frontend_net:
-    external: true
-  backend_net:
+  cmccb2b_net:
     external: true

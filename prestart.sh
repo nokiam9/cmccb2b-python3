@@ -16,8 +16,7 @@ else
 fi
 
 # Create docker network
-docker network create frontend_net
-docker network create backend_net
+docker network create cmccb2b_net
 
 if test ${mode} = 1 ; then
     docker-compose -f mongo/mongo.yml -f mongo/mongo.override.yml up -d
