@@ -1,11 +1,12 @@
 # # -*- coding: utf-8 -*-
 
 from flask import request, render_template, abort
-from models import BidNotice, NoticeResult
+from models import BidNotice, NoticeResult, SingleSourceProcurement
 
 collections = {
     'bid_notice': (u'招标公告', BidNotice),
     'notice_result': (u'中标公示', NoticeResult),
+    'single_source_procurement': (u'单一来源采购', SingleSourceProcurement),
 }
 
 
