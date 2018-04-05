@@ -8,5 +8,10 @@
     "comment": "curl scrapyd:6800",
     "schedule": "31 * * * *",
     "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=notice_result"
+  },
+  {
+    "comment": "curl scrapyd:6800",
+    "schedule": "14 * * * *",
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=single_source_procurement"
   }
 ]
