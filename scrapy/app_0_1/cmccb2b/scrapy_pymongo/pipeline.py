@@ -11,7 +11,7 @@ from pymongo.errors import ConnectionFailure, DuplicateKeyError, OperationFailur
 from scrapy.exceptions import DropItem
 
 
-class Cmccb2bPipeline(object):
+class PymongoPipeline(object):
     """ Standard scrapy mongo pipeline, config by settings.py """
     def __init__(self):
         """ Construct """

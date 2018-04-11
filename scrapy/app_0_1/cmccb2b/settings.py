@@ -8,7 +8,6 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-
 BOT_NAME = 'cmccb2b'
 
 SPIDER_MODULES = ['cmccb2b.spiders']
@@ -65,7 +64,9 @@ ROBOTSTXT_OBEY = False          # ignore scrapy limited setting of website
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'cmccb2b.pipelines.Cmccb2bPipeline': 300,
+    # TODO：此处只是定义变量，实际import在crawler中调用，因此必须用全路径，今后考虑加载到pypy中
+    'cmccb2b.scrapy_pymongo.pipeline.PymongoPipeline': 300,
+    # 'cmccb2b.pipelines.Cmccb2bPipeline': 300,
     # 'cmccb2b.pipelines.JsonWriterPipeline': 400
 }
 
