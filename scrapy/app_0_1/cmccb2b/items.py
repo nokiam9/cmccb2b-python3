@@ -20,15 +20,3 @@ class BidNoticeItem(scrapy.Item):
     notice_url = scrapy.Field()
     notice_context = scrapy.Field()
 
-
-class NoticeResultItem(scrapy.Item):
-    id = scrapy.Field()
-    source_ch = scrapy.Field()
-    notice_type = scrapy.Field()
-    title = scrapy.Field()
-    published_date = scrapy.Field()
-    timestamp = scrapy.Field()
-
-    notice_url = scrapy.Field()
-    notice_context = scrapy.Field()
-

@@ -28,10 +28,13 @@
         <thead class="table-primary">
         <tr>
             <th>
-                招标单位
+                项目名称
             </th>
             <th>
-                项目名称
+                公告类型
+            </th>
+            <th>
+                招标单位
             </th>
             <th>
                 发布日期
@@ -49,11 +52,15 @@
         <tr onclick="selectResult('{{todo.id}}') " class="small">
             {% endif %}
             <td>
-                {{todo.source_ch}}
-            </td>
-            <td>
                 {{todo.title}}
             </td>
+            <td>
+                {{todo.notice_type}}
+            </td>
+            <td>
+                {{todo.source_ch}}
+            </td>
+
             <td>
                 {{todo.published_date.strftime('%Y-%m-%d')}}
             </td>

@@ -5,4 +5,7 @@ db.BidNotice.createIndex(
 db.BidNotice.createIndex(
     {'id' : 1}, unique=true
     );
+db.BidNotice.createIndex(
+    {'notice_type': 1}
+    );
 printjson(db.BidNotice.getIndexes());
