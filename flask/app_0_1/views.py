@@ -15,7 +15,7 @@ def index():
     return render_template('layout.html')
 
 
-def pageview(collection_name):
+def page_view(collection_name):
     page_num = request.args.get('page_id', default=1, type=int)
 
     try:
@@ -33,6 +33,15 @@ def pageview(collection_name):
                            todos_page=todos_page,
                            collection_name=collection_name,
                            title=title)
+
+
+def context_view(notice_id):
+    context = BidNotice.objects(id=notice_id).first().notice_context
+    if not context:
+        return notice_id
+        abort(status=404)
+    else:
+        return context
 
 
 def hello():

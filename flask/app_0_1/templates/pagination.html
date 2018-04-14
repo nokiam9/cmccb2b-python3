@@ -80,12 +80,21 @@
 
 <script>
     function selectResult(id) {
-        var uri = "https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id=" + id;
+        //location.hostname 返回 web 主机的域名
+        //location.pathname 返回当前页面的路径和文件名
+        //location.port 返回 web 主机的端口 （80 或 443）
+        //location.protocol 返回所使用的 web 协议（http:// 或 https://）
+
+        var uri = window.location.protocol + "//" + window.location.hostname
+            + ":" + window.location.port + "/context/"  + id;
+        // var uri = "https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id=" + id;
+        // alert(uri)
+
         window.open(uri);
     }
 
     function gotoPage(collection, pageNo) {
-        document.getElementsByName('currentPage')[0].value = pageNo
+        document.getElementsByName('currentPage')[0].value = pageNo;
         doSearchByPage(collection, pageNo);
     }
 </script>

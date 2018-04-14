@@ -41,6 +41,12 @@
             doSearchByPage(collection, 1);
         }
 
+        function showScrapyd() {
+            var uri = window.location.protocol + "//" + window.location.hostname + ":6800";
+//            alert(uri)
+            window.open(uri)
+        }
+
         //首次加载页面
         $(document).ready(
             function () {
@@ -62,7 +68,7 @@
             <a class="nav-link" href="#">设置</a>
             <a class="nav-link" href="#">帮助</a>
         </div> <!-- /class="collapse -->
-        <a class="nav-link" href="http://www.caogo.cn:6800" target="_blank">Scrapyd Monitor</a>
+        <a class="nav-link" href="javascript:void(0);" target="_blank" onclick="showScrapyd()">Scrapyd Monitor</a>
         <a class="nav-link" href="#">退出</a>
     </div> <!-- /class="container-fluid" -->
 </nav> <!-- /nav -->
