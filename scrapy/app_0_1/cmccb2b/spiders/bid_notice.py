@@ -2,7 +2,6 @@
 import scrapy
 import logging
 import datetime
-import copy
 
 from cmccb2b.items import BidNoticeItem
 from scrapy.exceptions import NotSupported, NotConfigured
@@ -51,6 +50,7 @@ class BidNoticeSpider(scrapy.Spider):
         }
 
     def start_requests(self):
+        """ Start crawler """
         return [scrapy.FormRequest(
             url=self.query_url,
             formdata=self.form_data,
@@ -58,11 +58,12 @@ class BidNoticeSpider(scrapy.Spider):
         )]
 
     def parse(self, response):
+        """Parse """
         try:
             table = response.xpath("//table")[0]
         except IndexError:
             logger.error(u"Can't find <table> in page %i, this spider abort! response=\n%s",
-                              self.current_page, response.body)
+                         self.current_page, response.body)
             raise CloseSpider("html_format_error")
         # -------------------------------------------------------------
         # - Get <tr> and bypass top 2 line for table head
@@ -90,7 +91,7 @@ class BidNoticeSpider(scrapy.Spider):
                 item['timestamp'] = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
             except IndexError:
                 logger.warning(u'Some <td> may be empty in page %i, please check HTML as:\n%s',
-                                    self.current_page, tr.extract())
+                               self.current_page, tr.extract())
             else:
                 rec += 1
                 # Get context from another parse and append field in item[]
@@ -118,6 +119,7 @@ class BidNoticeSpider(scrapy.Spider):
         )
 
     def parse_of_context(self, response):
+        """ Get context HTML from notice ID """
         item = response.meta['item']
         item['notice_url'] = response.url
         # item['notice_context'] = response.body.decode('utf-8')      # TODO: 招标公告文本的数据量大，目前不存储
