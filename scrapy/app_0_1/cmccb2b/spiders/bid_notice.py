@@ -6,25 +6,27 @@ import datetime
 from cmccb2b.items import BidNoticeItem
 from scrapy.exceptions import NotSupported, NotConfigured
 
+from cmccb2b.utils.html2text import filter_tags
+
 logger = logging.getLogger(__name__)
 
 
 class BidNoticeSpider(scrapy.Spider):
     name = 'bid_notice'
 
-    def __init__(self, notice_type, *args, **kwargs):
+    def __init__(self, notice_type=2, *args, **kwargs):
         """
         Construct
         :param notice_type: scrapy crawl $spider -a notice_type=?
                 1:单一来源采购公告
-                2:采购公告
+                2:采购公告(default value)
                 3:资格预审公告
-                4:N/A，测试显示都是2015年的数据，似乎已经被废弃
-                5:N/A，同'4'
-                6:N/A，同'4'
+                4:N/A，测试是2015年的数据，似乎已经被废弃
+                5:N/A
+                6:N/A
                 7:招标结果公示
                 8:供应商信息收集公告
-                9:N/A，同'4'
+                9:N/A
         """
         super(BidNoticeSpider, self).__init__(*args, **kwargs)
 
@@ -122,5 +124,5 @@ class BidNoticeSpider(scrapy.Spider):
         """ Get context HTML from notice ID """
         item = response.meta['item']
         item['notice_url'] = response.url
-        # item['notice_context'] = response.body.decode('utf-8')      # TODO: 招标公告文本的数据量大，目前不存储
+        item['notice_context'] = filter_tags(response.body.decode('utf-8'))      # TODO: 招标公告文本的数据量大，目前不存储
         yield item

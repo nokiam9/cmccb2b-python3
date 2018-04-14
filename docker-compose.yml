@@ -54,7 +54,7 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./crontab/config/config.json:/opt/crontab/config.json:rw
+      - ./crontab/config/config.json:/opt/crontab/config.json:ro
 
 networks:
   cmccb2b_net:

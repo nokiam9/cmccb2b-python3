@@ -3,6 +3,7 @@
 - [dockerfile 参考手册](https://docs.docker.com/engine/reference/builder/#usage)
 ### Python ###
 - [Python 3的语法手册](http://www.runoob.com/python3/python3-tutorial.html)
+- [正则表达式的教程](https://www.cnblogs.com/wxshi/p/6827056.html)
 
 ### Mongo ###
 - [Pymongo 3.6](https://docs.mongodb.com/getting-started/python/client/)

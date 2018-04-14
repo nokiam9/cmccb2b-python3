@@ -64,7 +64,7 @@ ROBOTSTXT_OBEY = False          # ignore scrapy limited setting of website
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # TODO：此处只是定义变量，实际import在crawler中调用，因此必须用全路径，今后考虑加载到pypy中
+    # TODO：此处只是定义变量，实际import在crawler中调用，因此必须用全路径，今后考虑加载到pypi中
     'cmccb2b.scrapy_pymongo.pipeline.PymongoPipeline': 300,
     # 'cmccb2b.pipelines.Cmccb2bPipeline': 300,
     # 'cmccb2b.pipelines.JsonWriterPipeline': 400
