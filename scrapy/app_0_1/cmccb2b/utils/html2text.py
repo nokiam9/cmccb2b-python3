@@ -22,16 +22,17 @@ def filter_tags(htmlstr):
         news = filter_tags(s)
     """
     re_cdata = re.compile('//<!\[CDATA\[[^>]*//\]\]>', re.I)  # 匹配CDATA，这是不允许xml解析的内容
-    re_script = re.compile(r'<\s*script[^>]*>.*?<\s*/\s*script\s*>', re.I | re.S)  # 匹配script脚本
-    # Notice: js代码中有 <，导致无法过滤，改为.*?，非贪婪模式的任意字符，且设置re.S包含换行符
+
     # re_script = re.compile(r'<\s*script[^>]*>[^<]*<\s*/\s*script\s*>', re.I)  # 原始代码
-    ''' <\s*script[^>]*>[^<]*<\s*/\s*script\s*> 模式分析：
+    re_script = re.compile(r'<\s*script[^>]*>.*?<\s*/\s*script\s*>', re.I | re.S)  # 匹配script脚本
+    ''' <\s*script[^>]*>[^<]*<\s*/\s*script\s*> 正则表达式的分析：
     <       以字符<开始
     \s*     可能出现的无限个，空白字符
     script  字符串script
     [^>]*   可能出现的的无限个，不是>的字符
     >       字符>
-    [^<]*   可能出现的的无限个，不是<的字符，这是js的代码
+    [^<]*   可能出现的的无限个，不是<的字符，这就是js的代码。
+            原来的代码中因为js脚本中有 <，导致无法过滤，改为.*?，非贪婪模式的任意字符，并设置re.S包含换行符
     <       字符<
     \s*     可能出现的的无限个，空白字符
     /       字符／
@@ -43,7 +44,7 @@ def filter_tags(htmlstr):
     '''
     re_style = re.compile('<\s*style[^>]*>[^<]*<\s*/\s*style\s*>', re.I)  # style
     re_br = re.compile('<br\s*?/?>')  # 处理换行
-    re_h = re.compile('</?\w+[^>]*>')  # HTML标签
+    re_h = re.compile('</?\w+[^>]*>')  # HTML标签，<!DOCTYPE ...>标签未处理
     '''
     <       开始字符<
     /?      可能出现一次的，字符/
@@ -52,6 +53,7 @@ def filter_tags(htmlstr):
     >       字符>
     '''
     re_comment = re.compile('<!--[^>]*-->')  # HTML注释
+    re_head = re.compile('<!DOCTYPE[^>]*>', re.I)   # 处理<!DOCTYPE ...>标签
     re_blank_line = re.compile('(\r\n|\n)+')  # 如果一个或者多个换行符
     re_tab = re.compile('\t+')
 
@@ -60,6 +62,7 @@ def filter_tags(htmlstr):
     s = re_style.sub('', s)             # 去掉style
     s = re_br.sub('\n', s)              # 将br转换为换行
     s = re_h.sub('', s)                 # 去掉所有的HTML标签
+    s = re_head.sub('', s)              # 去掉<!DOCTYPE ...>标签
     s = re_comment.sub('', s)           # 去掉HTML注释
     s = re_blank_line.sub('\n', s)      # 只保留一个
     s = re_tab.sub('', s)
