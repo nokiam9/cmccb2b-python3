@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title> www.caogo.cn </title>
+
+    <!-- Bootstrap core CSS && dashboard CSS && logo img -->
+    <link rel="icon" href="static/images/logo.png">
+    <link href="static/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/dashboard.css" rel="stylesheet">
+
+    <!--自定义的js，包含ajax等等-->
+    <script type=text/javascript src="/static/js/jquery-1.12.4.min.js"></script>
+    <script language="javascript">
+        // 获取view，并刷新main数据区
+        function getNoticeView(type_id, page_id) {
+            <!-- 设置ajax页面的url地址-->
+            var url = '/notice/pagination/' + type_id + '?page_id=' + page_id;
+            document.getElementsByName('currentPage')[0].value = page_id;
+
+            // 开始使用AJAX的POST方法从url中读取数据，并装入searchResult的元素
+            $.ajax({
+                type: "GET",
+                url: url,
+                cache: false
+            }).done(function (responseData) {
+                $("#mainFrame").html(responseData);
+            }).fail(function (responseData) {
+                alert("error! url=" + url);
+            });
+        }
+
+        // 选中type类型时，刷新main页面
+        function selectType(type_id) {
+            document.getElementsByName('currentType')[0].value = type_id;
+            getNoticeView(type_id, 1);
+        }
+        //打开新窗口，显示scrapy monitor
+        function showScrapyd() {
+            var uri = window.location.protocol + "//" + window.location.hostname + ":6800";
+            window.open(uri)
+        }
+
+        //首次加载页面，默认type_id=0, page_id=1
+        $(document).ready(
+            function () {
+                getNoticeView(0, 1);
+            }
+        )
+    </script>
+</head>
+
+<body>
+<!-- 顶部导航栏，其他页面也应包含此部分 -->
+<header class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!--品牌区定义，有冗余的定义是为了辅助设备 -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">CMCC采购招标网</a>
+        </div>
+        <!-- 顶部导航条，横排 -->
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" onclick="showScrapyd()">Scrapyd</a></li>
+                <li><a href="#">设置</a></li>
+                <li><a href="#">帮助</a></li>
+                <li><a href="#">登录</a></li>
+            </ul>
+            <!-- 搜索框 -->
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="请输入关键字...">
+            </form>
+        </div>
+    </div>
+</header>
+
+<!--页面下部框架，包含侧边导航栏＋数据展示区-->
+<div class="container-fluid">
+    <div class="row">
+        <!--左侧的导航栏 -->
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">基本概况</a></li>
+                <li><a href="#">列表展示</a></li>
+                <li><a href="#">图形分析</a></li>
+                <li><a href="#">数据导出</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a class="active"  href="" onclick="selectType('0')" >全部公告信息</a></li>
+                <li><a href="" onclick="selectType('2')">招标公告</a></li>
+                <li><a href="" onclick="selectType('1')">单一来源采购公告</a></li>
+                <li><a href="" onclick="selectType('3')">中标公示</a></li>
+                <li><a href="" onclick="selectType('7')">资格预审公告</a></li>
+                <li><a href="" onclick="selectType('8')">供应商信息收集</a></li>
+            </ul>
+        </div>
+
+        <!--主数据展示区main -->
+        <main role="main" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+            <!--隐藏的数据变量-->
+            <input type="hidden" name="currentType" value="0">
+            <input type="hidden" name="currentPage" value="1">
+
+            <!-- 为AJAX预留的区域，ID是mainframe -->
+            <div class="table-responsive" id="mainFrame">
+            </div>
+        </main>
+    </div>
+</div>
+
+<footer>
+    <p>Copyrights 2018</p>
+</footer>
+
+<!-- body尾部加载js防止页面加载堵塞，Bootstrap＝3.3.7, Jquery＝1.12.4,下一句是检测jquery是否正常加载，否则从备用地址加载  -->
+<script src="static/bootstrap3/js/bootstrap.min.js"></script>
+<script src="static/js/jquery-1.12.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"><\/script>')</script>
+<!--<script src="../../assets/js/vendor/holder.min.js"></script>-->
+
+</body>
+</html>

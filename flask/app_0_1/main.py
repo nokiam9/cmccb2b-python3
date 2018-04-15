@@ -18,6 +18,7 @@ app.add_url_rule('/', view_func=views.index)
 app.add_url_rule('/hello', view_func=views.hello)
 app.add_url_rule('/pagination/<string:collection_name>', view_func=views.page_view)
 app.add_url_rule('/context/<string:notice_id>', view_func=views.context_view)
+app.add_url_rule('/notice/pagination/<string:type_id>', view_func=views.notice_page_view)
 
 
 if __name__ == "__main__":

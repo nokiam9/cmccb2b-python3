@@ -8,7 +8,7 @@
         {% if page %}
         <!--如果不是当前页，正常显示链接，否则显示数字但链接不可用，，而如果页面列表的当前值为None，则显示... -->
         {% if page != pagination.page %}
-        <li class="page-item"><a class="page-link" onclick="gotoPage('{{collection_name}}', {{page}})">{{page}}</a></li>
+        <li class="page-item"><a class="page-link" onclick="selectPage('{{ type_id }}', {{page}})">{{page}}</a></li>
         {% else %}
         <li class="page-item active"><a class="page-link">{{ page }}</a></li>
         {% endif %}
@@ -21,52 +21,30 @@
 {% endmacro %}
 
 {% block body %}
-
-<div class="List of bid notice table-responsive-sm ">
-    <h4 class="text-primary">{{title}} 列表</h4>
+<div class="table-sm ">
+    <h3 class="text-primary">{{title}} 列表</h3>
     <table class="table table-hover text-center text-nowrap table-bordered">
-        <thead class="table-primary">
+        <thead class="thead-default">
         <tr>
-            <th>
-                项目名称
-            </th>
-            <th>
-                公告类型
-            </th>
-            <th>
-                招标单位
-            </th>
-            <th>
-                发布日期
-            </th>
-            <th>
-                爬取时间
-            </th>
+            <th class="text-center ">项目名称</th>
+            <th class="text-center ">公告类型</th>
+            <th class="text-center ">招标单位</th>
+            <th class="text-center ">发布日期</th>
+            <th class="text-center ">爬取时间</th>
         </tr>
         </thead>
         <tbody>
         {% for todo in todos_page.items %}
         {% if todo.reminded_time is none %}
-        <tr onclick="selectResult('{{todo.id}}')" class="text-info small">
+        <tr onclick="selectContext('{{todo.id}}')" class="text-info small">
             {% else %}
-        <tr onclick="selectResult('{{todo.id}}') " class="small">
+        <tr onclick="selectContext('{{todo.id}}') " class="small">
             {% endif %}
-            <td>
-                {{todo.title}}
-            </td>
-            <td>
-                {{todo.notice_type}}
-            </td>
-            <td>
-                {{todo.source_ch}}
-            </td>
-
-            <td>
-                {{todo.published_date.strftime('%Y-%m-%d')}}
-            </td>
-            <td>
-                {{todo.timestamp.strftime('%Y-%m-%d %H:%M:%S')}}
-            </td>
+            <td>{{todo.title}}</td>
+            <td>{{todo.notice_type}}</td>
+            <td>{{todo.source_ch}}</td>
+            <td>{{todo.published_date.strftime('%Y-%m-%d')}}</td>
+            <td>{{todo.timestamp.strftime('%Y-%m-%d %H:%M:%S')}}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -79,23 +57,14 @@
 </div>
 
 <script>
-    function selectResult(id) {
-        //location.hostname 返回 web 主机的域名
-        //location.pathname 返回当前页面的路径和文件名
-        //location.port 返回 web 主机的端口 （80 或 443）
-        //location.protocol 返回所使用的 web 协议（http:// 或 https://）
-
+    function selectContext(id) {
         var uri = window.location.protocol + "//" + window.location.hostname
             + ":" + window.location.port + "/context/"  + id;
-        // var uri = "https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id=" + id;
-        // alert(uri)
-
         window.open(uri);
     }
-
-    function gotoPage(collection, pageNo) {
-        document.getElementsByName('currentPage')[0].value = pageNo;
-        doSearchByPage(collection, pageNo);
+    function selectPage(type_id, page_id) {
+        document.getElementsByName('currentPage')[0].value = page_id;
+        getNoticeView(type_id, page_id);
     }
 </script>
 
