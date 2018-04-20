@@ -19,4 +19,5 @@ class BidNoticeItem(scrapy.Item):
 
     notice_url = scrapy.Field()
     notice_context = scrapy.Field()
+    type_id = scrapy.Field()
 

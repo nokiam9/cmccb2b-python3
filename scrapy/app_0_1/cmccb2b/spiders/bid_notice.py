@@ -14,10 +14,10 @@ logger = logging.getLogger(__name__)
 class BidNoticeSpider(scrapy.Spider):
     name = 'bid_notice'
 
-    def __init__(self, notice_type=2, *args, **kwargs):
+    def __init__(self, type_id, *args, **kwargs):
         """
         Construct
-        :param notice_type: scrapy crawl $spider -a notice_type=?
+        :param notice_type: scrapy crawl $spider -a type_id=?
                 1:单一来源采购公告
                 2:采购公告(default value)
                 3:资格预审公告
@@ -30,13 +30,13 @@ class BidNoticeSpider(scrapy.Spider):
         """
         super(BidNoticeSpider, self).__init__(*args, **kwargs)
 
-        notice_type = str(int(notice_type))
-        if notice_type not in ['1', '2', '3', '7', '8']:
-            logger.error(u"Unsupported notice_type {0} and abort!!!".format(notice_type))
+        self.type_id = str(int(type_id))
+        if self.type_id not in ['1', '2', '3', '7', '8']:
+            logger.error(u"Unsupported type_id with {0} and abort!!!".format(type_id))
             raise NotSupported
 
         self.query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType=' \
-                         + str(notice_type)
+                         + str(self.type_id)
         self.context_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='  # append with id(int)
 
         self.current_page = 1
@@ -60,7 +60,7 @@ class BidNoticeSpider(scrapy.Spider):
         )]
 
     def parse(self, response):
-        """Parse """
+        """ Parse """
         try:
             table = response.xpath("//table")[0]
         except IndexError:
@@ -80,6 +80,7 @@ class BidNoticeSpider(scrapy.Spider):
         for tr in table.xpath("tr[position() > 2]"):
             item = BidNoticeItem()          # Notice: scrapy.request meta是浅复制，必须在循环内初始化class
             try:
+                item['type_id'] = self.type_id
                 item['id'] = tr.xpath("@onclick").extract_first().split('\'')[1]
                 item['source_ch'] = tr.xpath("td[1]/text()").extract_first()
                 item['notice_type'] = tr.xpath("td[2]/text()").extract_first()
