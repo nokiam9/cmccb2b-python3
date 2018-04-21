@@ -28,7 +28,7 @@
     </script>
     <script type="text/javascript"t>
         // 获取view，并刷新main数据区
-        function getNoticeView(type, page) {
+        function getNoticeView() {
             <!-- 设置ajax页面的url地址-->
             var type_id = document.getElementsByName('currentType')[0].value;
             var page_id = document.getElementsByName('currentPage')[0].value;
@@ -51,13 +51,13 @@
         function selectType(type_id) {
             document.getElementsByName('currentType')[0].value = type_id;
             document.getElementsByName('currentPage')[0].value = 1;
-            getNoticeView(type_id, 1);
+            getNoticeView();
         }
 
         // 选中翻页按钮，执行ajax刷新，用于pagination.html
         function selectPage(type_id, page_id) {
             document.getElementsByName('currentPage')[0].value = page_id;
-            getNoticeView(type_id, page_id);
+            getNoticeView();
         }
 
         // 选中翻页按钮，执行ajax刷新，用于pagination.html
