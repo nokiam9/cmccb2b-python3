@@ -2,26 +2,26 @@
   {
     "comment": "curl scrapyd:6800",
     "schedule": "01 * * * *",
-    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d notice_type=1"
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=1"
   },
   {
     "comment": "curl scrapyd:6800",
     "schedule": "11 * * * *",
-    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d notice_type=2"
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=2"
   },
   {
     "comment": "curl scrapyd:6800",
     "schedule": "31 * * * *",
-    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d notice_type=3"
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=3"
   },
   {
     "comment": "curl scrapyd:6800",
     "schedule": "41 * * * *",
-    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d notice_type=7"
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=7"
   },
   {
     "comment": "curl scrapyd:6800",
     "schedule": "51 * * * *",
-    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d notice_type=8"
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=8"
   }
 ]
