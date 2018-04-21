@@ -66,7 +66,7 @@ def notice_page_view(type_id):
     try:
         title = NOTICE_TYPE_CONFIG[type_id]
     except KeyError:
-        abort(status=402)
+        abort(status=406)   # Unacceptable url para
 
     # 为了解决order by排序时内存溢出的问题，document的meta定义增加了index
     if type_id == '0':
@@ -78,6 +78,7 @@ def notice_page_view(type_id):
             order_by("-published_date", "-timestamp").\
             paginate(page=page_id, per_page=PAGE_SIZE)
 
+    print("url is {0}".format(request.url))
     return render_template('pagination.html',
                            todos_page=todos_page,
                            type_id=type_id,

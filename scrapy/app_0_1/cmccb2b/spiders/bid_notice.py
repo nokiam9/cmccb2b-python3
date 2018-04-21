@@ -34,6 +34,8 @@ class BidNoticeSpider(scrapy.Spider):
         if self.type_id not in ['1', '2', '3', '7', '8']:
             logger.error(u"Unsupported type_id with {0} and abort!!!".format(type_id))
             raise NotSupported
+        else:
+            logger.info(u"Set crawler argument with type_id={0}".format(self.type_id))
 
         self.query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType=' \
                          + str(self.type_id)

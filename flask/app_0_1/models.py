@@ -20,6 +20,7 @@ class BidNotice (db.Document):
     published_date = db.DateTimeField()
     timestamp = db.DateTimeField()
     reminded_time = db.DateTimeField()
+    type_id = db.StringField()
 
 
 class NoticeResult (db.Document):

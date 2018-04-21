@@ -14,15 +14,28 @@
     <link href="static/dashboard.css" rel="stylesheet">
 
     <!--自定义的js，包含ajax等等-->
-    <script type=text/javascript src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
     <script language="javascript">
+        //首次加载页面
+        $(document).ready(
+            function () {
+                var type_id = document.getElementsByName('currentType')[0].value;
+                var page_id = document.getElementsByName('currentPage')[0].value;
+                console.log("Notice: Only once! DOM ready function: type=" + type_id + "page=" + page_id);
+                getNoticeView(type_id, page_id);
+            }
+        )
+    </script>
+    <script type="text/javascript"t>
         // 获取view，并刷新main数据区
-        function getNoticeView(type_id, page_id) {
+        function getNoticeView(type, page) {
             <!-- 设置ajax页面的url地址-->
-            var url = '/notice/pagination/' + type_id + '?page_id=' + page_id;
-            document.getElementsByName('currentPage')[0].value = page_id;
+            var type_id = document.getElementsByName('currentType')[0].value;
+            var page_id = document.getElementsByName('currentPage')[0].value;
+            var url ="/notice/pagination/" + type_id + '?page_id=' + page_id;
+            console.log("Start to get view from " + url);
 
-            // 开始使用AJAX的POST方法从url中读取数据，并装入searchResult的元素
+            // 开始使用AJAX的POST方法从url中读取数据，并装入dataFrame的元素
             $.ajax({
                 type: "GET",
                 url: url,
@@ -30,27 +43,35 @@
             }).done(function (responseData) {
                 $("#mainFrame").html(responseData);
             }).fail(function (responseData) {
-                alert("error! url=" + url);
+                alert("Failed with response status=" + str(responseData.status));
             });
         }
 
         // 选中type类型时，刷新main页面
         function selectType(type_id) {
             document.getElementsByName('currentType')[0].value = type_id;
+            document.getElementsByName('currentPage')[0].value = 1;
             getNoticeView(type_id, 1);
         }
-        //打开新窗口，显示scrapy monitor
-        function selectScrapyd() {
-            var uri = window.location.protocol + "//" + window.location.hostname + ":6800";
-            window.open(uri)
+
+        // 选中翻页按钮，执行ajax刷新，用于pagination.html
+        function selectPage(type_id, page_id) {
+            document.getElementsByName('currentPage')[0].value = page_id;
+            getNoticeView(type_id, page_id);
         }
 
-        //首次加载页面，默认type_id=0, page_id=1
-        $(document).ready(
-            function () {
-                getNoticeView(0, 1);
-            }
-        )
+        // 选中翻页按钮，执行ajax刷新，用于pagination.html
+        function selectContext(id) {
+            var url = window.location.protocol + "//" + window.location.hostname
+                + ":" + window.location.port + "/context/" + id;
+            window.open(url);
+        }
+
+        //打开新窗口，显示scrapy monitor
+        function selectScrapyd() {
+            var url = window.location.protocol + "//" + window.location.hostname + ":6800";
+            window.open(url)
+        }
     </script>
 </head>
 
@@ -97,12 +118,12 @@
                 <li><a href="#">数据导出</a></li>
             </ul>
             <ul class="nav nav-sidebar">
-                <li><a class="active"  href="" onclick="selectType('0')" >全部公告信息</a></li>
-                <li><a href="" onclick="selectType('2')">招标公告</a></li>
-                <li><a href="" onclick="selectType('1')">单一来源采购公告</a></li>
-                <li><a href="" onclick="selectType('3')">中标公示</a></li>
-                <li><a href="" onclick="selectType('7')">资格预审公告</a></li>
-                <li><a href="" onclick="selectType('8')">供应商信息收集</a></li>
+                <li><a onclick="selectType('0')">全部公告信息</a></li>
+                <li><a onclick="selectType('2')">招标公告</a></li>
+                <li><a onclick="selectType('1')">单一来源采购公告</a></li>
+                <li><a onclick="selectType('3')">招标结果公示</a></li>
+                <li><a onclick="selectType('7')">资格预审公告</a></li>
+                <li><a onclick="selectType('8')">供应商信息收集</a></li>
             </ul>
         </div>
 

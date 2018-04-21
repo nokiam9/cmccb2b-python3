@@ -1,5 +1,5 @@
 {# Macro for creating navigation links #}
-{% macro render_navigation(pagination, endpoint) %}
+{% macro render_navigation(pagination) %}
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-end">
         {% for page in pagination.iter_pages() %}
@@ -53,19 +53,7 @@
 
 <div class="navigation">
     <h6 class="border-left small text-muted"> 总记录数: {{todos_page.total}}</h6>
-    {{ render_navigation(todos_page, 'pagination') }}
+    {{ render_navigation(todos_page) }}
 </div>
-
-<script>
-    function selectContext(id) {
-        var uri = window.location.protocol + "//" + window.location.hostname
-            + ":" + window.location.port + "/context/"  + id;
-        window.open(uri);
-    }
-    function selectPage(type_id, page_id) {
-        document.getElementsByName('currentPage')[0].value = page_id;
-        getNoticeView(type_id, page_id);
-    }
-</script>
 
 {% endblock %}
