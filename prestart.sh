@@ -24,3 +24,8 @@ else
     docker-compose -f mongo/mongo.yml up -d
 fi
 
+# Create indexes of collection
+echo "Create indexes of cmccb2b.BidNotice..."
+docker exec -it mongo mongo /data/migrations/add_index.js
+
+
