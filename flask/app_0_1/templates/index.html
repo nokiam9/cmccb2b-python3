@@ -9,9 +9,9 @@
     <title> www.caogo.cn </title>
 
     <!-- Bootstrap core CSS && dashboard CSS && logo img -->
-    <link rel="icon" href="static/images/logo.png">
-    <link href="static/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/dashboard.css" rel="stylesheet">
+    <link rel="icon" href="../static/images/logo.png">
+    <link href="../static/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/dashboard.css" rel="stylesheet">
 
     <!--自定义的js，包含ajax等等-->
     <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
@@ -26,14 +26,13 @@
             }
         )
     </script>
-    <script type="text/javascript"t>
+    <script type="text/javascript" t>
         // 获取view，并刷新main数据区
         function getNoticeView() {
             <!-- 设置ajax页面的url地址-->
             var type_id = document.getElementsByName('currentType')[0].value;
             var page_id = document.getElementsByName('currentPage')[0].value;
-            var url ="/notice/pagination/" + type_id + '?page_id=' + page_id;
-            console.log("Start to get view from " + url);
+            var url = "/notice/pagination/" + type_id + '?page_id=' + page_id;
 
             // 开始使用AJAX的POST方法从url中读取数据，并装入dataFrame的元素
             $.ajax({
@@ -43,7 +42,7 @@
             }).done(function (responseData) {
                 $("#mainFrame").html(responseData);
             }).fail(function (responseData) {
-                alert(responseData.status);
+                alert(url + ":" + responseData.status);
             });
         }
 
@@ -109,8 +108,9 @@
 <!--页面下部框架，包含侧边导航栏＋数据展示区-->
 <div class="container-fluid">
     <div class="row">
-        <!--左侧的导航栏 -->
-        <div class="col-sm-3 col-md-2 sidebar">
+        <!-- 定义左侧的导航栏sidebar -->
+        <div class="sidebar col-sm-3 col-md-2">
+            <!-- 定义子项nav-sidebar  -->
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="#">基本概况</a></li>
                 <li><a href="#">列表展示</a></li>
@@ -128,7 +128,7 @@
         </div>
 
         <!--主数据展示区main -->
-        <main role="main" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+        <div class="main col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
             <!--隐藏的数据变量-->
             <input type="hidden" name="currentType" value="0">
             <input type="hidden" name="currentPage" value="1">
@@ -136,17 +136,18 @@
             <!-- 为AJAX预留的区域，ID是mainframe -->
             <div class="table-responsive" id="mainFrame">
             </div>
-        </main>
+        </div>
     </div>
 </div>
 
-<footer>
-    <p>Copyrights 2018</p>
-</footer>
+<!-- 定义页脚footer -->
+<div class="footer container-fluid">
+    <p>Copyright @2018 www.caogo.cn Email: sj@0225@icloud.com</p>
+</div>
 
 <!-- body尾部加载js防止页面加载堵塞，Bootstrap＝3.3.7, Jquery＝1.12.4,下一句是检测jquery是否正常加载，否则从备用地址加载  -->
-<script src="static/bootstrap3/js/bootstrap.min.js"></script>
-<script src="static/js/jquery-1.12.4.min.js"></script>
+<script src="../static/bootstrap3/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery-1.12.4.min.js"></script>
 <script>window.jQuery || document.write('<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"><\/script>')</script>
 <!--<script src="../../assets/js/vendor/holder.min.js"></script>-->
 

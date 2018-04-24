@@ -26,6 +26,7 @@ fi
 
 # Create indexes of collection
 echo "Create indexes of cmccb2b.BidNotice..."
+sleep 5
 docker exec -it mongo mongo /data/migrations/add_index.js
 
 

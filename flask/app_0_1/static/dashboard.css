@@ -73,6 +73,7 @@ body {
 
 .main {
   padding: 20px;
+  min-height: 600px;
 }
 @media (min-width: 768px) {
   .main {
@@ -102,4 +103,14 @@ body {
 .placeholder img {
   display: inline-block;
   border-radius: 50%;
+}
+
+.footer {
+  position: relative;
+  height: 30px;
+  margin-top: -2em;
+  text-align: right;
+  width: auto;
+  margin-right: 10px;
+  color: #555555;
 }
