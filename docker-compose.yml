@@ -58,6 +58,40 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./crontab/config/config.json:/opt/crontab/config.json:ro
 
+  xunsearch:
+    build:
+      context: xunsearch
+      dockerfile: xunsearch.dockerfile
+    image: cmccb2b/xunsearch
+    container_name: xunsearch
+    restart: always
+
+    networks:
+      - cmccb2b_net
+
+    expose:
+      - 8383
+      - 8384
+
+    volumes:
+      - ../data/xunsearch:/usr/local/xunsearch/data
+
+  php:
+    build:
+      context: xunsearch
+      dockerfile: php.dockerfile
+    image: cmccb2b/php
+    container_name: php
+    restart: always
+
+    networks:
+      - cmccb2b_net
+
+    expose:
+      - 80
+    ports:
+      - 9000:80
+
 networks:
   cmccb2b_net:
     external: true
