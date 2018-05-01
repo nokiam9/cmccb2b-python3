@@ -4,39 +4,30 @@ FROM ubuntu:14.04
 
 MAINTAINER sj0225@icloud.com
 
-# APT 自动安装 PHP 相关的依赖包，如需其他依赖包在此添加
+# APT 自动安装 PHP 及其Extension的依赖包，如需其他依赖包在此添加
 RUN apt-get update && \
-    apt-get -y install \
-        curl \
-        wget \
-        apache2 \
-        libapache2-mod-php5 \
-        php5-mysql \
-        php5-sqlite \
-        php5-gd \
-        php5-curl \
-        php-pear \
-        php-apc && \
-    apt-get -y install \
-        php5-dev \
-        unzip \
-        libpcre3-dev \
-        php-pear && \
-
-
-    # 用完包管理器后安排打扫卫生可以显著的减少镜像大小, release发布时启用
-    apt-get clean && \
-    apt-get autoclean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    apt-get -y install curl wget unzip \
+        apache2 libapache2-mod-php5 libpcre3-dev \
+        php5-dev php5-mysql php5-sqlite php5-gd php5-curl && \
+    apt-get -y install php-pear php-apc php-pear
 
     # 安装 Composer，此物是 PHP 用来管理依赖关系的工具
-    # Laravel Symfony 等时髦的框架会依赖它
-    curl -sS https://getcomposer.org/installer \
-        | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer \
+        | php -- --install-dir=/usr/local/bin --filename=composer && \
 
-# 安装php-mongodb扩展, 上面第二个apt-get也是为安装pecl准备的
-RUN pecl install mongodb && \
-    echo "extension=mongodb.so" >> /etc/php5/apache2/php.ini
+    # PHP 命令行的配置文件：//etc/php5/cli/php.ini，这是从pnp --ini的信息中找到"Loaded Configuration"字段
+    # PHP 浏览器的配置文件：/etc/php5/apache2/php.ini，从浏览器打开phpinfo()中分析
+    # 安装php-mongodb扩展, 并设置/etc/php5/cli/pnp.ini，注意两个都要安装
+    pecl install mongodb && \
+    echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` && \
+    echo "extension=mongodb.so" >> /etc/php5/apache2/php.ini && \
+
+    # 调整 PHP 处理 Request 里变量提交值的顺序为EGPCS（ENV/GET/POST/COOKIE/SERVER），解析顺序从左到右，后解析新值覆盖旧值
+    sed -i 's/variables_order.*/variables_order = "EGPCS"/g' \
+        `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` && \
+
+    # Apache2配置文件：/etc/apache2/apache2.conf，设置一个默认服务名，避免启动时给个提示让人紧张.
+    echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # 安装xunsearch的PHP SDK组件
 WORKDIR /usr/local/src
@@ -45,15 +36,10 @@ RUN wget "http://www.xunsearch.com/download/xunsearch-sdk-latest.zip"  && \
     mv ../xunsearch/xunsearch-sdk ../xunsearch/sdk && \
     rm xunsearch-sdk-latest.zip
 
-# Apache 2 配置文件：/etc/apache2/apache2.conf
-# 给 Apache 2 设置一个默认服务名，避免启动时给个提示让人紧张.
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-
-    # PHP 配置文件：/etc/php5/apache2/php.ini
-    # 调整 PHP 处理 Request 里变量提交值的顺序，解析顺序从左到右，后解析新值覆盖旧值
-    # 默认设定为 EGPCS（ENV/GET/POST/COOKIE/SERVER）
-    && sed -i 's/variables_order.*/variables_order = "EGPCS"/g' \
-        /etc/php5/apache2/php.ini
+# 用完包管理器后安排打扫卫生可以显著的减少镜像大小, release发布时启用
+RUN apt-get clean && \
+    apt-get autoclean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # PHP文件放入 /App目录
 WORKDIR /
