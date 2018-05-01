@@ -29,12 +29,12 @@ RUN curl -sS https://getcomposer.org/installer \
     # Apache2配置文件：/etc/apache2/apache2.conf，设置一个默认服务名，避免启动时给个提示让人紧张.
     echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# 安装xunsearch的PHP SDK组件
-WORKDIR /usr/local/src
+# 安装xunsearch的PHP SDK组件到/app，并将项目文件放入sdk/php/app/目录
+WORKDIR /
 RUN wget "http://www.xunsearch.com/download/xunsearch-sdk-latest.zip"  && \
-    unzip xunsearch-sdk-latest.zip -d ../xunsearch && \
-    mv ../xunsearch/xunsearch-sdk ../xunsearch/sdk && \
+    unzip xunsearch-sdk-latest.zip -d /app && \
     rm xunsearch-sdk-latest.zip
+COPY cmccb2b.ini /app/xunsearch-sdk/php/app/
 
 # 用完包管理器后安排打扫卫生可以显著的减少镜像大小, release发布时启用
 RUN apt-get clean && \
@@ -42,12 +42,8 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # PHP文件放入 /App目录
-WORKDIR /
 RUN mkdir -p /app && rm -rf /var/www/html && ln -s /app /var/www/html
 COPY app/ /app
-
-# xunsearch的项目文件放入SDK目录
-COPY cmccb2b.ini /usr/local/xunsearch/sdk/php/app/
 
 # 设置并运行docker的启动程序
 COPY entrypoint.sh /
