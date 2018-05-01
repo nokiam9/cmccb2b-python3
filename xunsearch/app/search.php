@@ -9,7 +9,7 @@
  */
 // 加载 XS 入口文件
 
-require_once '/usr/local/xunsearch/sdk/php/lib/XS.php';
+require_once '/app/xunsearch-sdk/php/lib/XS.php';
 error_reporting(E_ALL ^ E_NOTICE);
 
 //

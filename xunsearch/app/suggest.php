@@ -7,7 +7,7 @@
  * 创建时间：2018-04-30 18:10:52
  */
 // 加载 XS 入口文件
-require_once '/usr/local/xunsearch/sdk/php/lib/XS.php';
+require_once '/app/xunsearch-sdk/php/lib/XS.php';
 
 // Prefix Query is: term (by jQuery-ui)
 $q = isset($_GET['term']) ? trim($_GET['term']) : '';
