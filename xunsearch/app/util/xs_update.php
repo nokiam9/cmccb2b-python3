@@ -17,7 +17,7 @@ $filter = [
 ];
 
 $options = [
-    'limit' => 10000
+    'limit' => 100
 ];
 $query = new MongoDB\Driver\Query($filter, $options);
 
@@ -31,8 +31,10 @@ foreach($cursor as $record) {
     $doc->setField('title', $record->title);
     $doc->setField('source_ch', $record->source_ch);
     $doc->setField('notice_context', $record->notice_context);  // TODO：计划将纯字符文本，改为剔除script等标签的html
-    $doc->setField('published_date', (int)(string)$record->published_date);
-    // TODO: UTCDateTime被转换为(int)milliseconds，计划用于搜索结果的时间排序
+
+    $t = $record->published_date->toDatetime();
+    $doc->setField('published_date', (int)$t->format("Ymd"));
+    // TODO: UTCDateTime被转换为(int)20180920010101用于搜索结果的时间排序，注意：忽略His，因为实际数据只精确到日期，
 
     $ret = $index->update($doc);
     var_dump($record->published_date);
@@ -41,6 +43,6 @@ foreach($cursor as $record) {
 }
 
 // 立即刷新index
-$index.flush();
+//$index.flush();
 
 ?>

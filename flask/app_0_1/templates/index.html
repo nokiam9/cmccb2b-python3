@@ -71,6 +71,16 @@
             var url = window.location.protocol + "//" + window.location.hostname + ":6800";
             window.open(url)
         }
+
+        //打开新窗口，显示搜索页面
+        function selectSearch(obj) {
+            //   http://0.0.0.0:9000/search.php?q=%E7%94%98%E8%82%83&f=_all&s=relevance
+            var ss = document.getElementsByName('mystr')[0].value;
+//            alert(ss);
+            var url = "http://" + window.location.hostname + ":9000/search.php?q="
+                + ss + "&f=_all&s=relevance";
+            window.open(url)
+        }
     </script>
 </head>
 
@@ -98,8 +108,8 @@
                 <li><a href="#">登录</a></li>
             </ul>
             <!-- 搜索框 -->
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="请输入关键字...">
+            <form name="myform" class="navbar-form navbar-right" onsubmit="return selectSearch(this)">
+                <input name="mystr" type="text" class="form-control" placeholder="请输入关键字...">
             </form>
         </div>
     </div>
