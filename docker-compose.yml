@@ -88,11 +88,11 @@ services:
     volumes:
       - ../data/xunsearch:/usr/local/xunsearch/data
 
-  php:
+  xunsearch:
     build:
-      context: xunsearch
-      dockerfile: php.dockerfile
-    image: cmccb2b/php
+      context: xunsearch/
+      dockerfile: xunsearch.dockerfile
+    image: cmccb2b/xunsearch
     container_name: php
     restart: always
 
