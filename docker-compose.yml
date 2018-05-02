@@ -93,7 +93,7 @@ services:
       context: xunsearch/
       dockerfile: xunsearch.dockerfile
     image: cmccb2b/xunsearch
-    container_name: php
+    container_name: xunsearch
     restart: always
 
     networks:
