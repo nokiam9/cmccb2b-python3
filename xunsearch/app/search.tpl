@@ -21,7 +21,7 @@
     <script>
         // Updated by SJ: 选中翻页按钮，执行ajax刷新，用于pagination.html
         function selectContext(id) {
-            var url = "http://www.caogo.cn/context/" + id;
+            var url = window.location.protocol + "//" + window.location.hostname + "/context/" + id;
             window.open(url);
         };
     </script>
