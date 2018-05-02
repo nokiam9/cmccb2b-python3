@@ -6,6 +6,11 @@
  * 该文件由 xunsearch PHP-SDK 工具自动生成，请根据实际需求进行修改
  * 创建时间：2018-04-30 18:10:52
  */
+
+// 打开错误输出，release时关闭
+ini_set('display_errors','1');
+error_reporting(E_ALL);
+
 // 加载 XS 入口文件
 require_once '/app/xunsearch-sdk/php/lib/XS.php';
 

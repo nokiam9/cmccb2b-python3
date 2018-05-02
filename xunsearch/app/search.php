@@ -7,8 +7,12 @@
  * 创建时间：2018-04-30 18:10:52
  * 默认编码：UTF-8
  */
-// 加载 XS 入口文件
 
+// 打开错误输出，release时关闭
+ini_set('display_errors','1');
+error_reporting(E_ALL);
+
+// 加载 XS 入口文件
 require_once '/app/xunsearch-sdk/php/lib/XS.php';
 error_reporting(E_ALL ^ E_NOTICE);
 
