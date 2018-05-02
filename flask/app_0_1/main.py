@@ -15,6 +15,7 @@ db.init_app(app)
 
 # 所有route的定义，采用add_url_rule（），而不是修饰符，便于将所有视图隐藏在views.py中
 app.add_url_rule('/', view_func=views.index)
+app.add_url_rule('/index.html', view_func=views.index)
 app.add_url_rule('/hello', view_func=views.hello)
 app.add_url_rule('/context/<string:notice_id>', view_func=views.context_view)
 app.add_url_rule('/notice/pagination/<string:type_id>', view_func=views.notice_page_view)

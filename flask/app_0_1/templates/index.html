@@ -75,10 +75,8 @@
         //打开新窗口，显示搜索页面
         function selectSearch(obj) {
             //   http://0.0.0.0:9000/search.php?q=%E7%94%98%E8%82%83&f=_all&s=relevance
-            var ss = document.getElementsByName('mystr')[0].value;
-//            alert(ss);
-            var url = "http://" + window.location.hostname + ":9000/search.php?q="
-                + ss + "&f=_all&s=relevance";
+            var url = window.location.protocol + "//" + window.location.hostname + ":9000/search.php?q="
+                + document.getElementsByName('mystr')[0].value + "&f=_all&s=relevance";
             window.open(url)
         }
     </script>

@@ -1,6 +1,20 @@
 version: '2'
 
 services:
+  nginx:
+    build:
+      context: nginx/
+    image: cmccb2b/nginx
+    container_name: nginx
+    restart: always
+
+    networks:
+      - cmccb2b_net
+    ports:
+      - "80:80"
+      - "6800:6800"
+      - "9000:9000"
+
   scrapy:
     build:
       context: scrapy/
@@ -31,16 +45,14 @@ services:
 
     networks:
       - cmccb2b_net
+    expose:
+      - 80
 
-    ports:
-      - "80:80"
-      - "6800:6800"
-      - "443:443"
     environment:
       - FLASK_APP=app/main.py
       - FLASK_DEBUG=1
       - 'RUN=flask run --host=0.0.0.0 --port=80'
-      - LISTEN_PORT=8080    # defined for http nginx in docker:flask
+#      - LISTEN_PORT=8080    # defined for http nginx in docker:flask
 
   crontab:
     build:
@@ -68,7 +80,6 @@ services:
 
     networks:
       - cmccb2b_net
-
     expose:
       - 8383
       - 8384
@@ -89,8 +100,6 @@ services:
 
     expose:
       - 80
-    ports:
-      - 9000:80
 
 networks:
   cmccb2b_net:
