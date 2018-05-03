@@ -19,10 +19,7 @@ services:
   scrapy:
     build:
       context: scrapy/
-      args:
-        AppMajorVersion: "0"
-        AppMinorVersion: "1"
-    image: cmccb2b/scrapy:0.1-python3.6
+    image: cmccb2b/scrapy
     container_name: scrapy
     restart: always
 
@@ -37,28 +34,22 @@ services:
   flask:
     build:
       context: flask/
-      args:
-        AppMajorVersion: "0"
-        AppMinorVersion: "1"
-    image: cmccb2b/flask:0.1-python3.6
+    image: cmccb2b/flask
     container_name: flask
     restart: always
 
     networks:
       - cmccb2b_net
-    expose:
-      - 80
 
     environment:
       - FLASK_APP=app/main.py
       - FLASK_DEBUG=1
       - 'RUN=flask run --host=0.0.0.0 --port=80'
-#      - LISTEN_PORT=8080    # defined for http nginx in docker:flask
 
   crontab:
     build:
       context: crontab/
-    image: cmccb2b/crontab:1.1
+    image: cmccb2b/crontab
     container_name: crontab
     restart: always
     depends_on:
@@ -95,6 +86,7 @@ services:
 
     networks:
       - cmccb2b_net
+
 
 networks:
   cmccb2b_net:
