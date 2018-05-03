@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:1.12.2
 LABEL MAINTAINER="sj0225@icloud.com"
 
 # 安装支持https的自定义SSL证书
