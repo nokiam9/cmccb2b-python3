@@ -60,7 +60,6 @@ services:
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./crontab/config/config.json:/opt/crontab/config.json:ro
 
   xunsearch-server:
     build:
