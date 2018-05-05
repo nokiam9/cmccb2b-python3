@@ -115,7 +115,7 @@ try {
 		$total = $search->getDbTotal();
 
 		if ($xml !== 'yes') {
-			// try to corrected, if resul too few
+			// try to corrected, if result too few
 			if ($count < 1 || $count < ceil(0.001 * $total)) {
 				$corrected = $search->getCorrectedQuery();
 			}
