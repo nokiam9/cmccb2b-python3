@@ -61,9 +61,9 @@ def filter_tags(htmlstr):
     s = re_script.sub('', s)            # 去掉SCRIPT
     s = re_style.sub('', s)             # 去掉style
     s = re_br.sub('\n', s)              # 将br转换为换行
-    s = re_h.sub('', s)                 # 去掉所有的HTML标签
-    s = re_head.sub('', s)              # 去掉<!DOCTYPE ...>标签
-    s = re_comment.sub('', s)           # 去掉HTML注释
+    # s = re_h.sub('', s)                 # 去掉所有的HTML标签
+    # s = re_head.sub('', s)              # 去掉<!DOCTYPE ...>标签
+    # s = re_comment.sub('', s)           # 去掉HTML注释
     s = re_blank_line.sub('\n', s)      # 只保留一个
     s = re_tab.sub('', s)
 

@@ -26,7 +26,7 @@
   },
   {
     "comment": "cron update xunsearch index ",
-    "schedule": "10,20,30,40,50 * * * *",
+    "schedule": "*/10 * * * *",
     "command": "php /app/xs_update.php",
     "project": "crontab",
     "container": "xunsearch"
