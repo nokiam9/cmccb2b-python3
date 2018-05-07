@@ -3,7 +3,7 @@
 require_once '/app/xunsearch-sdk/php/lib/XS.php';
 
 define("XS_PROJECT", "cmccb2b");
-define("XS_UPDATE_LOG" , "cmccb2b.XunSearchLog");
+define("XS_UPDATE_LOG" , "cmccb2b.XunsearchUpdateLog");
 define("MONGO_SOURCE", "cmccb2b.BidNotice");
 define("MONGO_URI", "mongodb://mongo:27017");
 
