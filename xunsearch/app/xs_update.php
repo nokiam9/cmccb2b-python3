@@ -24,12 +24,12 @@ $start_time = get_UTCTime();
 $latest=get_last_timestamp($manager);
 $records=update_index($manager, $indexer, $latest);
 
-if ($records > 0) {
-    // Save log for increment update
-    $stop_time = get_UTCTime();
-    set_last_timestamp($manager, $start_time, $stop_time, $records);
+// Save log for increment update
+$stop_time = get_UTCTime();
+set_last_timestamp($manager, $start_time, $stop_time, $records);
 
-    // 立即刷新index
+if ($records > 0) {
+   // 立即刷新index
     echo "Flush index and log...", PHP_EOL;
     $indexer->flushIndex();
     $indexer->flushLogging();
@@ -62,7 +62,12 @@ function set_last_timestamp($manager, $start_time, $stop_time, $records) {
 }
 
 function get_last_timestamp($manager) {
-    $filter =['project'=>XS_PROJECT];
+    $filter =[
+        'project'=>XS_PROJECT,
+        'update_records'=> [
+            '$gt'=>0,
+        ],
+    ];
     $options = ['sort' => ['start_time'=> -1]];
     $query = new MongoDB\Driver\Query($filter, $options);
 
@@ -71,8 +76,8 @@ function get_last_timestamp($manager) {
 
     $ret = $cursor->toArray();
     if (count($ret) > 0) {
-        var_dump($ret);
-        var_dump($ret[0]->start_time);
+//        var_dump($ret);
+//        var_dump($ret[0]->start_time);
         echo "From Mongo DB, get max start-time={$ret[0]->start_time->toDatetime()->format('Y-m-d H:i:s')}" , PHP_EOL;
         return $ret[0]->start_time;
     }
@@ -97,7 +102,6 @@ function update_index($mongo_manager, $indexer, $last_time) {
         ];
         $query = new MongoDB\Driver\Query($filter, $options);
         $cursor = $mongo_manager->executeQuery(MONGO_SOURCE, $query);
-        print_r($cursor);
 
         foreach($cursor as $record) {
             $document->setField('nid', $record->id);                         // mongo目前设置为str类型，
@@ -109,10 +113,8 @@ function update_index($mongo_manager, $indexer, $last_time) {
             $document->setField('timestamp', $record->timestamp->toDatetime()->format('Y-m-d H:i:s'));
 
             $ret = $indexer->update($document);
-            // var_dump($record->published_date);
-            // echo "Update index {$count}: {$record->timestamp->toDatetime()->format('Y-m-d H:i:s')}, {$record->title}.", PHP_EOL;
-            echo "Update index {$count}: {$document->f('title')} ...", PHP_EOL;
             $count = $count + 1;
+            echo "Update index {$count}: {$document->f('title')} ...", PHP_EOL;
         }
     } catch (Exception $e) {
             echo $e->getMessage(), "\n";

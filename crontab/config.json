@@ -25,10 +25,10 @@
     "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=8"
   },
   {
-    "comment": "cron update xunsearch index ",
-    "schedule": "*/10 * * * *",
-    "command": "php /app/xs_update.php",
-    "project": "crontab",
-    "container": "xunsearch"
+	"comment":"Cron xs update index",
+	"schedule":"*/5 * * * *",
+	"command":"php /app/xs_update.php",
+	"container":"xunsearch",
+	"onstart":true
   }
 ]
