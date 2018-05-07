@@ -7,4 +7,4 @@ COPY ssl/caogo.cn.key /etc/nginx/ssl/caogo.cn.key
 
 # 替换nginx的配置文件
 RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d/
+COPY http.conf /etc/nginx/conf.d/
