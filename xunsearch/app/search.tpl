@@ -41,12 +41,12 @@
                 </div>
                 <div class="condition" id="q-options">
                     <label class="radio inline"><input type="radio" name="f" value="title" <?php echo $f_title; ?>
-                        />Title</label>
+                        />标题</label>
                     <label class="radio inline"><input type="radio" name="f"
-                                                       value="source_ch" <?php echo $f_source_ch; ?> />Source_ch</label>
+                                                       value="source_ch" <?php echo $f_source_ch; ?> />发布单位</label>
                     <label class="radio inline"><input type="radio" name="f"
                                                        value="published_date" <?php echo $f_published_date; ?>
-                        />Published_date</label>
+                        />发布日期</label>
                     <label class="radio inline">
                         <input type="radio" name="f" value="_all" <?php echo $f__all; ?> />全文
                     </label>
@@ -60,9 +60,9 @@
                     <select name="s" size="1">
                         <option value="relevance">相关性</option>
                         <option value="published_date_DESC"
-                        <?php echo $s_published_date_DESC; ?>>Published_date从大到小</option>
+                        <?php echo $s_published_date_DESC; ?>>发布日期从新到旧</option>
                         <option value="published_date_ASC"
-                        <?php echo $s_published_date_ASC; ?>>Published_date从小到大</option>
+                        <?php echo $s_published_date_ASC; ?>>发布日期从旧到新</option>
                     </select>
                     排序
                 </div>
@@ -122,9 +122,9 @@
                 <dd>
                     <p><?php echo $search->highlight(htmlspecialchars($doc->notice_context)); ?></p>
                     <p class="field-info text-error">
-                        <span><strong>Source_ch:</strong><?php echo htmlspecialchars($doc->source_ch); ?></span>
-                        <span><strong>Published_date:</strong><?php echo htmlspecialchars($doc->
-                            published_date); ?></span>
+                        <span><strong>发布单位:</strong><?php echo htmlspecialchars($doc->source_ch); ?></span>
+                        <span><strong>发布日期:</strong><?php echo htmlspecialchars($doc->published_date); ?></span>
+                        <span><strong>刷新时间:</strong><?php echo htmlspecialchars($doc->timestamp); ?></span>
                     </p>
                 </dd>
                 <?php endforeach; ?>

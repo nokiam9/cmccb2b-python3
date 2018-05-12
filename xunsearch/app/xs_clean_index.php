@@ -16,7 +16,7 @@ define("MONGO_URI", "mongodb://mongo:27017");
 $xs = new XS(XS_PROJECT);    // 自动使用 $prefix/sdk/php/app/demo.ini 作项目配置文件
 $indexer = $xs->index;        // 获取 索引对象
 $indexer->clean();
-echo "Clean index ......";
+echo "Clean index ......", PHP_EOL;
 
 $manager = new MongoDB\Driver\Manager(MONGO_URI);
 $command = new MongoDB\Driver\Command([
@@ -25,11 +25,16 @@ $command = new MongoDB\Driver\Command([
 
 try {
     $cursor = $manager->executeCommand('cmccb2b', $command);
-} catch(MongoDB\Driver\Exception $e) {
-    echo $e->getMessage(), "\n";
-    exit;
+} catch(\Exception $e) {
+    if ($e->getCode() == 26) {  // ns not found..
+        echo "Warning: log collection isn't existed!!!", PHP_EOL;
+    }
+    else {
+        echo 'Error: code=', $e->getCode(), ', msg=',$e->getMessage(), PHP_EOL;
+        exit;
+    }
 }
 
-echo "Drop update log in MongoDB ......";
+echo "Drop update log in MongoDB ......", PHP_EOL;
 
 ?>
