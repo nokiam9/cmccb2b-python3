@@ -2,6 +2,7 @@ import random
 from pyecharts import Scatter3D, Bar
 from pyecharts_javascripthon.api import TRANSLATOR
 from flask import render_template
+from models import BidNotice
 
 
 REMOTE_HOST = "https://pyecharts.github.io/assets/js"
@@ -11,23 +12,25 @@ def chart_view():
     _bar = bar_chart()
     javascript_snippet = TRANSLATOR.translate(_bar.options)
     return render_template(
-        "pyecharts.html",
-        chart_id=_bar.chart_id,
-        host=REMOTE_HOST,
-        renderer=_bar.renderer,
-        my_width="100%",
-        my_height=600,
-        custom_function=javascript_snippet.function_snippet,
-        options=javascript_snippet.option_snippet,
-        script_list=_bar.get_js_dependencies(),
+        "pyecharts.html",                                       # 自定义，位于templates/的模版文件
+        chart_id=_bar.chart_id,                                 # 默认设置，
+        host=REMOTE_HOST,                                       # 常量定义，存放js文件的url地址
+        renderer=_bar.renderer,                                 # 默认设置，
+        my_width="100%",                                        # 默认设置，定义图表的宽度
+        my_height=600,                                          # 默认设置，定义图表的高度
+        custom_function=javascript_snippet.function_snippet,    # 默认设置，保存图片的方法，似乎基于node.js
+        options=javascript_snippet.option_snippet,              # 默认设置，
+        script_list=_bar.get_js_dependencies(),                 # 默认设置，需要动态加载的js文件
     )
 
 
 def bar_chart():
-    bar = Bar("我的第一个图表", "这里是副标题")
+    bar = Bar("公告信息发布趋势图", "From: cmccb2b")
+    bar.use_theme('light')
     bar.add(
-        "服装", ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"], [5, 20, 36, 10, 75, 90]
-    )
+        "日期", ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], [5, 20, 36, 10, 75, 90, 2]
+    )       # TODO: 从Mongo读取的数据存放在这里
+    bar.print_echarts_options()  # 该行只为了打印配置项，方便调试时使用
     return bar
 
 
