@@ -32,12 +32,12 @@ $cursor = $manager->executeQuery('cmccb2b.BidNotice', $query, $readPreference);
 
 foreach($cursor as $doc) {
     $arr = array(
-        "nid" => $doc->id,
+        "nid" => $doc->nid,
         "title" => $doc->title,
         "source_ch" => $doc->source_ch,
         "published_date" => (int)$doc->published_date->toDatetime()->format("Ymd"),
         "timestamp" => $doc->timestamp->toDatetime()->format('Y-m-d H:i:s'),
-        "notice_context" => $doc->notice_context,
+        "notice_context" => $doc->notice_content,
     );
     echo json_encode($arr), PHP_EOL;
 }
