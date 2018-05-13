@@ -42,7 +42,7 @@
             }).done(function (responseData) {
                 $("#mainFrame").html(responseData);
             }).fail(function (responseData) {
-                alert(url + ":" + responseData.status);
+                alert("url=" + url + ", status=" + responseData.status);
             });
         }
 

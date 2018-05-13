@@ -21,6 +21,8 @@
 - [jinja2官方文档](http://jinja.pocoo.org/docs/2.10/)
 - [werkzeug官方文档](http://werkzeug.pocoo.org/docs/0.14/)
 - [Flask Extension](https://wizardforcel.gitbooks.io/flask-extension-docs/content/flask-babel.html)
+- [Pyecharts的官方文档](http://pyecharts.org/#/zh-cn/flask)
+- [Pyecharts的Github主页](https://github.com/pyecharts/pyecharts)
 ### Bootstrap ###
 - [Bootstrap中文文档](https://v4.bootcss.com/docs/4.0/getting-started/introduction/)
 - [pyecharts图形控件](http://pyecharts.org/#/zh-cn/)
