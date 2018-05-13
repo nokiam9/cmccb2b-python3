@@ -83,7 +83,7 @@ class BidNoticeSpider(scrapy.Spider):
             item = BidNoticeItem()          # Notice: scrapy.request meta是浅复制，必须在循环内初始化class
             try:
                 item['type_id'] = self.type_id
-                item['id'] = tr.xpath("@onclick").extract_first().split('\'')[1]
+                item['nid'] = tr.xpath("@onclick").extract_first().split('\'')[1]
                 item['source_ch'] = tr.xpath("td[1]/text()").extract_first()
                 item['notice_type'] = tr.xpath("td[2]/text()").extract_first()
                 item['title'] = tr.xpath("td[3]/a/text()").extract_first()
@@ -101,7 +101,7 @@ class BidNoticeSpider(scrapy.Spider):
                 rec += 1
                 # Get context from another parse and append field in item[]
                 yield scrapy.Request(
-                      url=self.context_url+str(item['id']),
+                      url=self.context_url+str(item['nid']),
                       meta={'item': item},
                       callback=self.parse_of_context)
 
@@ -124,8 +124,8 @@ class BidNoticeSpider(scrapy.Spider):
         )
 
     def parse_of_context(self, response):
-        """ Get context HTML from notice ID """
+        """ Get context HTML from nid """
         item = response.meta['item']
         item['notice_url'] = response.url
-        item['notice_context'] = filter_tags(response.body.decode('utf-8'))      # TODO: 招标公告文本的数据量大，目前不存储
+        item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # content存储公告HTML，剔除script等标签
         yield item

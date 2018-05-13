@@ -20,8 +20,8 @@
     <![endif]-->
     <script>
         // Updated by SJ: 选中翻页按钮，执行ajax刷新，用于pagination.html
-        function selectContext(id) {
-            var url = window.location.protocol + "//" + window.location.hostname + "/context/" + id;
+        function selectContent(nid) {
+            var url = window.location.protocol + "//" + window.location.hostname + "/content/" + nid;
             window.open(url);
         };
     </script>
@@ -112,7 +112,7 @@
                 <?php foreach ($docs as $doc): ?>
                 <dt>
                     <!- 选中条目后，新开窗口显示Notice的详情 ->
-                    <a onclick="selectContext('<?php echo $doc->nid; ?>')">
+                    <a onclick="selectContent('<?php echo $doc->nid; ?>')">
                         <h4><?php echo $doc->rank(); ?>. <?php echo $search->highlight(htmlspecialchars($doc->title));
                             ?>
                             <small>[<?php echo $doc->percent(); ?>%]</small>
@@ -120,7 +120,7 @@
                     </a>
                 </dt>
                 <dd>
-                    <p><?php echo $search->highlight(htmlspecialchars($doc->notice_context)); ?></p>
+                    <p><?php echo $search->highlight(htmlspecialchars($doc->notice_content)); ?></p>
                     <p class="field-info text-error">
                         <span><strong>发布单位:</strong><?php echo htmlspecialchars($doc->source_ch); ?></span>
                         <span><strong>发布日期:</strong><?php echo htmlspecialchars($doc->published_date); ?></span>

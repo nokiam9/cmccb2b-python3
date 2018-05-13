@@ -19,13 +19,13 @@ def index():
     return render_template('index.html')
 
 
-def context_view(notice_id):
-    context = BidNotice.objects(id=notice_id).first().notice_context
-    if not context:
-        return notice_id
+def content_view(nid):
+    content = BidNotice.objects(nid=nid).first().notice_content
+    if not content:
+        return nid
         abort(status=404)
     else:
-        return context
+        return content
 
 
 def hello():
@@ -52,7 +52,6 @@ def notice_page_view(type_id):
             order_by("-published_date", "-timestamp").\
             paginate(page=page_id, per_page=PAGE_SIZE)
 
-    print("url is {0}".format(request.url))
     return render_template('pagination.html',
                            todos_page=todos_page,
                            type_id=type_id,

@@ -10,7 +10,7 @@ import scrapy
 class BidNoticeItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    id = scrapy.Field()
+    nid = scrapy.Field()
     source_ch = scrapy.Field()
     notice_type = scrapy.Field()
     title = scrapy.Field()
@@ -18,6 +18,6 @@ class BidNoticeItem(scrapy.Item):
     timestamp = scrapy.Field()
 
     notice_url = scrapy.Field()
-    notice_context = scrapy.Field()
+    notice_content = scrapy.Field()
     type_id = scrapy.Field()
 

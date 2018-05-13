@@ -36,9 +36,9 @@
         <tbody>
         {% for todo in todos_page.items %}
         {% if todo.reminded_time is none %}
-        <tr onclick="selectContext('{{todo.id}}')" class="text-info small">
+        <tr onclick="selectContent('{{todo.nid}}')" class="text-info small">
             {% else %}
-        <tr onclick="selectContext('{{todo.id}}') " class="small">
+        <tr onclick="selectContent('{{todo.nid}}')" class="small">
             {% endif %}
             <td>{{todo.title}}</td>
             <td>{{todo.notice_type}}</td>

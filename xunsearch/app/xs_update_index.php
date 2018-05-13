@@ -109,10 +109,10 @@ function update_index($mongo_manager, $indexer, $last_time) {
         $cursor = $mongo_manager->executeQuery(MONGO_SOURCE, $query);
 
         foreach($cursor as $record) {
-            $document->setField('nid', $record->id);                         // mongo目前设置为str类型，
+            $document->setField('nid', $record->nid);                         // mongo目前设置为str类型，
             $document->setField('title', $record->title);
             $document->setField('source_ch', $record->source_ch);
-            $document->setField('notice_context', $record->notice_context);
+            $document->setField('notice_content', $record->notice_content);
             // UTCDateTime被转换为(int)20180920,用于搜索结果的时间排序，注意：忽略His，因为实际数据只精确到日期，
             $document->setField('published_date', (int)$record->published_date->toDatetime()->format("Ymd"));
             $document->setField('timestamp', $record->timestamp->toDatetime()->format('Y-m-d H:i:s'));
