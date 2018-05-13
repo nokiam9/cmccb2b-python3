@@ -1,7 +1,10 @@
 import random
+import datetime
 from pyecharts import Scatter3D, Bar
 from pyecharts_javascripthon.api import TRANSLATOR
+
 from flask import render_template
+from mongoengine.queryset.visitor import Q
 from models import BidNotice
 
 
@@ -25,13 +28,30 @@ def chart_view():
 
 
 def bar_chart():
+    k, v = get_week_list()
     bar = Bar("公告信息发布趋势图", "From: cmccb2b")
     bar.use_theme('light')
-    bar.add(
-        "日期", ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], [5, 20, 36, 10, 75, 90, 2]
-    )       # TODO: 从Mongo读取的数据存放在这里
+    bar.add("日期", k, v)         # 从Mongo读取的数据存放在这里
     bar.print_echarts_options()  # 该行只为了打印配置项，方便调试时使用
     return bar
+
+
+def get_week_list():
+    now = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
+    week_key = []
+    week_value = []
+    for i in range(-30, 1):
+        t = now + datetime.timedelta(hours=24*i)
+        t0 = datetime.datetime(t.year, t.month, t.day)
+        t1 = t0 + datetime.timedelta(hours=24)
+        r = get_records_daily(t0, t1)
+        week_key.append(t.strftime('%Y-%m-%d'))
+        week_value.append(r)
+    return week_key, week_value
+
+
+def get_records_daily(t0, t1):
+    return BidNotice.objects(Q(published_date__lte=t1) & Q(published_date__gte=t0)).count()
 
 
 def chart_view01():
