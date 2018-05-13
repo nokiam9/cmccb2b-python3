@@ -68,7 +68,12 @@ function get_last_timestamp($manager) {
             '$gt'=>0,
         ],
     ];
-    $options = ['sort' => ['start_time'=> -1]];
+    $options = [
+        'sort' => [
+            'start_time'=> -1,
+        ],
+        'limit' => 1,
+    ];
     $query = new MongoDB\Driver\Query($filter, $options);
 
     $readPreference = new MongoDB\Driver\ReadPreference(MongoDB\Driver\ReadPreference::RP_PRIMARY);
