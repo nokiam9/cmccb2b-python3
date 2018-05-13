@@ -27,7 +27,9 @@
 - [HTML便签](http://www.runoob.com/html/html-quicklist.html)
 - [CSS手册](http://www.runoob.com/css/css-tutorial.html)
 - [javascript手册](http://www.runoob.com/js/js-tutorial.html)
-
+### 迅搜xunsearch ###
+- [xunsearch的下载地址](http://www.xunsearch.com/site/download)  
+- [xunsearch的参考文档](http://www.xunsearch.com/doc/php/guide/start.overview)
 ### GitHub ###
 - [Flask Mongo Engnie 源代码](https://github.com/MongoEngine/flask-mongoengine)
 - [tiangolo/uwsgi-nginx-flask:python2.7：基础镜像，集成了flask、uwsgi、nginx](https://github.com/tiangolo/uwsgi-nginx-flask-docker)

@@ -7,7 +7,8 @@
   {
     "comment": "curl scrapyd:6800",
     "schedule": "11 * * * *",
-    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=2"
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=bid_notice -d type_id=2",
+    "onstart":true
   },
   {
     "comment": "curl scrapyd:6800",
