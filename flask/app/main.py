@@ -20,7 +20,6 @@ app.add_url_rule('/index.html', view_func=views.index)
 app.add_url_rule('/hello', view_func=views.hello)
 app.add_url_rule('/content/<string:nid>', view_func=views.content_view)
 app.add_url_rule('/notice/pagination/<string:type_id>', view_func=views.notice_page_view)
-app.add_url_rule('/chart01', view_func=charts.chart_view01)
 app.add_url_rule('/chart', view_func=charts.chart_view)
 
 
