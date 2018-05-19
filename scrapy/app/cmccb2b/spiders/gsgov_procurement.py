@@ -84,7 +84,40 @@ class GsGovProcurementSpider(scrapy.Spider):
         item = response.meta['item']
         item['notice_url'] = response.url
         item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # content存储公告HTML，剔除script等标签
-        yield item
+
+        tag = response.xpath("//a[contains(@href, '/upload/article/')]")
+        if len(tag) == 0:
+            yield item
+        else:
+            item['attachment'] = []
+            for doc in tag:
+                url = self.domain + doc.xpath("@href").extract_first()
+                filename = doc.xpath('text()').extract_first()
+                item['attachment'].append({
+                    'url': url,
+                    'filename': filename
+                })
+            yield scrapy.Request(
+                url=item['attachment'][0]['url'],
+                meta={'item': item, 'total': len(tag), 'cur': 0},
+                callback=self.parse_of_attachment
+            )
+
+    def parse_of_attachment(self, response):
+        """ 解析并获取公告html中包含的附件信息 """
+        item = response.meta['item']
+        total = response.meta['total']
+        cur = response.meta['cur']
+        # item['attachment'][cur]['content'] = response.body ＃TODO：mongo要求doc是utf－8格式，无法存储二进制文件
+
+        cur += 1
+        if cur < total:
+            yield scrapy.Request(
+                url=item['attachment'][cur]['url'],
+                meta={'item': item, 'total': total, 'cur': cur},
+                callback=self.parse_of_attachment)
+        else:
+            yield item
 
     def fix_open_time(self, string):
         """ 分析字符串的内容特征，提取并返回开标日期 """
