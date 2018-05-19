@@ -95,17 +95,17 @@ ITEM_PIPELINES = {
 # URI: mongodb://[username:password@]host1[:port1],...[,hostN[:portN]]][/[database][?options]]
 MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://localhost:27017
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称。默认值scrapy
-# MONGODB_COLLECTION = 'BidNotice'            # 必须的，表空间名称，默认值items，但如果设置SEPARATE_COLLECTIONS将被忽略
 MONGODB_SEPARATE_COLLECTIONS = True         # 可选的，根据spider.name设置collection，优先级高于COLLECTION
-MONGODB_UNIQUE_KEY = [('nid', 1)]            # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
+# MONGODB_COLLECTION = 'BidNotice'          # 必须的，表空间名称，默认值items，但如果设置SEPARATE_COLLECTIONS将被忽略
+MONGODB_UNIQUE_KEY = [('nid', 1)]           # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
 MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬取，<0：报错并复位为0
 
 # TODO: Define for scrapy.mail
-# MAIL_FROM = '13901214002@139.com'           #
-# MAIL_HOST = 'smtp.139.com'		    	    # 使用的邮箱的smtp服务器地址，这里是163的smtp地址
-# MAIL_PORT = 465                             # 25-SMTP, 465-SMTPS（SMTP-over-SSL）
+# MAIL_FROM = '13901214002@139.com'         #
+# MAIL_HOST = 'smtp.139.com'		    	# 使用的邮箱的smtp服务器地址，这里是163的smtp地址
+# MAIL_PORT = 465                           # 25-SMTP, 465-SMTPS（SMTP-over-SSL）
 # MAIL_USER = '13901214002@139.com'		    # 发件人的用户名
 # MAIL_PASS = 'eos5d3'			            # 密码
-# MAIL_TLS = True                             # 强制使用STARTTLS
-# MAIL_SSL = True                             # 强制使用SSL加密连接
+# MAIL_TLS = True                           # 强制使用STARTTLS
+# MAIL_SSL = True                           # 强制使用SSL加密连接
 

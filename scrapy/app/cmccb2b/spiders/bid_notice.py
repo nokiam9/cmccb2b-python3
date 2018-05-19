@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 import scrapy
-import logging
 import datetime
 
 from cmccb2b.items import BidNoticeItem
-from scrapy.exceptions import NotSupported, NotConfigured
-
+from scrapy.exceptions import NotSupported
 from cmccb2b.utils.html2text import filter_tags
-
-logger = logging.getLogger(__name__)
 
 
 class BidNoticeSpider(scrapy.Spider):
@@ -32,10 +28,10 @@ class BidNoticeSpider(scrapy.Spider):
 
         self.type_id = str(int(type_id))
         if self.type_id not in ['1', '2', '3', '7', '8']:
-            logger.error(u"Unsupported type_id with {0} and abort!!!".format(type_id))
+            self.logger.error(u"Unsupported type_id with {0} and abort!!!".format(type_id))
             raise NotSupported
         else:
-            logger.info(u"Set crawler argument with type_id={0}".format(self.type_id))
+            self.logger.info(u"Set crawler argument with type_id={0}".format(self.type_id))
 
         self.query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType=' \
                          + str(self.type_id)
@@ -66,8 +62,8 @@ class BidNoticeSpider(scrapy.Spider):
         try:
             table = response.xpath("//table")[0]
         except IndexError:
-            logger.error(u"Can't find <table> in page %i, this spider abort! response=\n%s",
-                         self.current_page, response.body)
+            self.logger.error(u"Can't find <table> in page %i, this spider abort! response=\n%s",
+                              self.current_page, response.body)
             raise CloseSpider("html_format_error")
         # -------------------------------------------------------------
         # - Get <tr> and bypass top 2 line for table head
@@ -95,8 +91,8 @@ class BidNoticeSpider(scrapy.Spider):
                 # Set timestamp with UTC＋8hours
                 item['timestamp'] = datetime.datetime.utcnow() + datetime.timedelta(hours=8)
             except IndexError:
-                logger.warning(u'Some <td> may be empty in page %i, please check HTML as:\n%s',
-                               self.current_page, tr.extract())
+                self.logger.warning(u'Some <td> may be empty in page %i, please check HTML as:\n%s',
+                                    self.current_page, tr.extract())
             else:
                 rec += 1
                 # Get context from another parse and append field in item[]
@@ -106,10 +102,10 @@ class BidNoticeSpider(scrapy.Spider):
                       callback=self.parse_of_content)
 
         if rec == 0:
-            logger.info(u"Find the end of query and close spider now! current page is %i.", self.current_page)
+            self.logger.info(u"Find the end of query and close spider now! current page is %i.", self.current_page)
             return
 
-        logger.info(u"Current page is %i, and read %i records successful!", self.current_page, rec)
+        self.logger.info(u"Current page is %i, and read %i records successful!", self.current_page, rec)
         if rec % self.page_size == 0:
             self.current_page += rec // self.page_size
         else:
