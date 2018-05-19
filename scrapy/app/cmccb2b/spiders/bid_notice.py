@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class BidNoticeSpider(scrapy.Spider):
-    name = 'bid_notice'
+    name = 'BidNotice'
 
     def __init__(self, type_id, *args, **kwargs):
         """
@@ -103,7 +103,7 @@ class BidNoticeSpider(scrapy.Spider):
                 yield scrapy.Request(
                       url=self.context_url+str(item['nid']),
                       meta={'item': item},
-                      callback=self.parse_of_context)
+                      callback=self.parse_of_content)
 
         if rec == 0:
             logger.info(u"Find the end of query and close spider now! current page is %i.", self.current_page)
@@ -123,7 +123,7 @@ class BidNoticeSpider(scrapy.Spider):
             callback=self.parse
         )
 
-    def parse_of_context(self, response):
+    def parse_of_content(self, response):
         """ Get context HTML from nid """
         item = response.meta['item']
         item['notice_url'] = response.url
