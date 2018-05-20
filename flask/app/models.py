@@ -25,5 +25,7 @@ class BidNotice (db.Document):
     timestamp = db.DateTimeField()
     reminded_time = db.DateTimeField()
     type_id = db.StringField()
+    spider = db.StringField()
+    attachment = db.ListField(required=False)
 
 

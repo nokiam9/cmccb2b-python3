@@ -4,8 +4,7 @@ import datetime
 
 from cmccb2b.items import GsGovProcurementItem
 from cmccb2b.utils.html2text import filter_tags, strip_non_ascii
-from bson.binary import Binary
-from cStringIO import StringIO
+
 
 class GsGovProcurementSpider(scrapy.Spider):
     name = 'GsGovProcurement'
@@ -34,21 +33,22 @@ class GsGovProcurementSpider(scrapy.Spider):
 
     def parse(self, response):
         """ 分析query的结果，并传入pipeline """
-        li_list = response.xpath("//li[starts-with(@class, 'li')]")
-        if len(li_list) == 0:
+        tag = response.xpath("//li[starts-with(@class, 'li')]")
+        if len(tag) == 0:
             self.logger.info(u"Find endpoint of query, and exit.")
             return
 
         rec = 0
-        for li in li_list:
+        for li in tag:
             item = GsGovProcurementItem()  # Notice: scrapy.request meta是浅复制，必须在循环内初始化class
             try:
-                notice_url = li.xpath("a/@href").extract_first()
-                item['nid'] = notice_url.split('/')[3].split('.')[0]
+                notice_path = li.xpath("a/@href").extract_first()
+                item['spider'] = self.name
+                item['nid'] = notice_path.split('/')[3].split('.')[0]
                 item['title'] = li.xpath("a/text()").extract_first()
 
                 line = li.xpath("p[1]/span/text()").extract_first().split('|')    # 第一行包含四个字段
-                item['open_time'] = self.fix_open_time(line[0])  # 日期格式有多种不规范形式
+                item['open_time'] = self.fix_open_time(line[0])     # 日期格式有多种不规范形式
                 item['published_date'] = datetime.datetime.strptime(line[1][-20:-1], '%Y-%m-%d %H:%M:%S')
                 item['source_ch'] = line[2].split(u'：')[1]
                 item['agency'] = line[3].split(u'：')[1]
@@ -67,7 +67,7 @@ class GsGovProcurementSpider(scrapy.Spider):
                 rec += 1
                 # Get context from another parse and append field in item[]
                 yield scrapy.Request(
-                    url=self.domain + notice_url,
+                    url=self.domain + notice_path,
                     meta={'item': item},
                     callback=self.parse_of_content)
         self.logger.info(u"Current page is %i, and read %i records successful!", self.current_page, rec)
@@ -127,29 +127,31 @@ class GsGovProcurementSpider(scrapy.Spider):
             yield item
 
     def fix_open_time(self, string):
-        """ 分析字符串的内容特征，提取并返回开标日期 """
+        """ 分析字符串的内容特征，提取并返回开标日期, 如果格式错误，返回1970/1/1 """
         year, month, day, hour, minute, second = 0, 0, 0, 0, 0, 0
         words = strip_non_ascii(string).strip(' ').split(' ')  # 剔除中文字符，去除头尾空格，按中间空格分为date,time
 
         try:
-            if words[0].find('/') > 0:
-                d = words[0].split('/')
-            else:
-                d = words[0].split('-')
-            year = int(d[0])
-            month = int(d[1])
-            day = int(d[2])
+            year, month, day = map(int, words[0].split('-'))
+        except ValueError:
+            try:
+                year, month, day = map(int, words[0].split('/'))
+            except ValueError:
+                return datetime.datetime.utcfromtimestamp(0)
 
-            if len(words) > 1:
-                t = words[1].split(":")
-                hour = int(t[0])
-                minute = int(t[1])
-                if len(t) > 2:
-                    second = int(t[2])
-            t = datetime.datetime(year, month, day, hour=hour, minute=minute, second=second)
-        except (IndexError, UnicodeEncodeError, ValueError):
-            self.logger.info(u"Get open_time from '{0}' failed, and reset!".format(string))
-            t = datetime.datetime(1973, 2, 25)
-        return t
+        if len(words) > 1:
+            try:
+                hour, minute, second = map(int, words[1].split(':'))
+            except ValueError:
+                try:
+                    second = 0
+                    hour, minute = map(int, words[1].split(':'))
+                except ValueError:
+                    return datetime.datetime.utcfromtimestamp(0)
+
+        try:
+            return datetime.datetime(year, month, day, hour, minute, second)
+        except ValueError:
+            return datetime.datetime.utcfromtimestamp(0)
 
 

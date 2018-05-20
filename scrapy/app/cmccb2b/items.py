@@ -7,32 +7,24 @@
 import scrapy
 
 
-class BidNoticeItem(scrapy.Item):       # cmccb2b招标公告
+class NoticeBaseItem(scrapy.Item):      # 各类招标信息的公共基类，包含必须的字段信息
     spider = scrapy.Field()
-    nid = scrapy.Field()
+    nid = scrapy.Field()                # Primary Key
     source_ch = scrapy.Field()
     notice_type = scrapy.Field()
     title = scrapy.Field()
     published_date = scrapy.Field()
+    notice_url = scrapy.Field()
+    notice_content = scrapy.Field()     # HTML文本，剔除了scrapt等无效标签内容
+    attachment = scrapy.Field()         # 可能的数组，包含附件文件的url和filename
     timestamp = scrapy.Field()
 
-    notice_url = scrapy.Field()
-    notice_content = scrapy.Field()
+
+class BidNoticeItem(NoticeBaseItem):       # cmccb2b招标公告
     type_id = scrapy.Field()
 
 
-class GsGovProcurementItem(scrapy.Item):    # 甘肃政府采购网
-    spider = scrapy.Field()
-    nid = scrapy.Field()        # PrimaryKey，设置为html文件名
-    source_ch = scrapy.Field()
-    notice_type = scrapy.Field()
-    title = scrapy.Field()
-    published_date = scrapy.Field()
-    notice_url = scrapy.Field()
-    notice_content = scrapy.Field()
-    timestamp = scrapy.Field()
-    attachment = scrapy.Field()
-
+class GsGovProcurementItem(NoticeBaseItem):    # 甘肃政府采购网
     owner = scrapy.Field()
     open_time = scrapy.Field()
     agency = scrapy.Field()

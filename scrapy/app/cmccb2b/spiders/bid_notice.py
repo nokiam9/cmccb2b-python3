@@ -3,12 +3,13 @@ import scrapy
 import datetime
 
 from cmccb2b.items import BidNoticeItem
-from scrapy.exceptions import NotSupported
+from scrapy.exceptions import NotSupported, CloseSpider
 from cmccb2b.utils.html2text import filter_tags
 
 
 class BidNoticeSpider(scrapy.Spider):
     name = 'BidNotice'
+    domain = 'https://b2b.10086.cn'
 
     def __init__(self, type_id, *args, **kwargs):
         """
@@ -78,6 +79,7 @@ class BidNoticeSpider(scrapy.Spider):
         for tr in table.xpath("tr[position() > 2]"):
             item = BidNoticeItem()          # Notice: scrapy.request meta是浅复制，必须在循环内初始化class
             try:
+                item['spider'] = self.name
                 item['type_id'] = self.type_id
                 item['nid'] = tr.xpath("@onclick").extract_first().split('\'')[1]
                 item['source_ch'] = tr.xpath("td[1]/text()").extract_first()
@@ -120,8 +122,21 @@ class BidNoticeSpider(scrapy.Spider):
         )
 
     def parse_of_content(self, response):
-        """ Get context HTML from nid """
+        """ 解析，并存储公告HTML文本 """
         item = response.meta['item']
         item['notice_url'] = response.url
-        item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # content存储公告HTML，剔除script等标签
+        item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # HTML剔除script等标签
+
+        # 解析，并以数组方式保存附件文件信息
+        tag = response.xpath("//a[contains(@href, '/b2b/main/commonDownload.html?')]")
+        if len(tag) > 0:
+            # Notice：Mongo中的字段可以定义为数组，比标准SQL更灵活
+            item['attachment'] = []
+            for doc in tag:
+                url = self.domain + doc.xpath("@href").extract_first()
+                filename = doc.xpath('font/text()').extract_first()
+                item['attachment'].append({
+                    'url': url,
+                    'filename': filename
+                })
         yield item
