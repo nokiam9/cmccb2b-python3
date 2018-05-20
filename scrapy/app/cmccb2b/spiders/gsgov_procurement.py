@@ -4,7 +4,8 @@ import datetime
 
 from cmccb2b.items import GsGovProcurementItem
 from cmccb2b.utils.html2text import filter_tags, strip_non_ascii
-
+from bson.binary import Binary
+from cStringIO import StringIO
 
 class GsGovProcurementSpider(scrapy.Spider):
     name = 'GsGovProcurement'
@@ -89,6 +90,7 @@ class GsGovProcurementSpider(scrapy.Spider):
         if len(tag) == 0:
             yield item
         else:
+            # Notice：Mongo中的字段可以定义为数组，比标准SQL更灵活
             item['attachment'] = []
             for doc in tag:
                 url = self.domain + doc.xpath("@href").extract_first()
@@ -104,11 +106,16 @@ class GsGovProcurementSpider(scrapy.Spider):
             )
 
     def parse_of_attachment(self, response):
-        """ 解析并获取公告html中包含的附件信息 """
+        """ 解析并获取公告html中包含的附件信息，利用meta传递数据实现循环的控制 """
         item = response.meta['item']
         total = response.meta['total']
         cur = response.meta['cur']
-        # item['attachment'][cur]['content'] = response.body ＃TODO：mongo要求doc是utf－8格式，无法存储二进制文件
+
+        '''mongo要求doc是utf－8格式，存储二进制文件可采用bson.binary.Binary方式，但BSON限制小于16M
+        也可以采用mongo外挂的gridfs的方法，但需要手工处理doc的关联
+        从性能考虑，本例不在MONGO中储存附件原文件，以下代码仅供参考'''
+        # content = StringIO(response.body)
+        # item['attachment'][cur]['content'] = Binary(content.getvalue())
 
         cur += 1
         if cur < total:
