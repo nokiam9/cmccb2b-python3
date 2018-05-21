@@ -15,9 +15,13 @@ class NoticeBaseItem(scrapy.Item):      # 各类招标信息的公共基类，�
     title = scrapy.Field()
     published_date = scrapy.Field()
     notice_url = scrapy.Field()
-    notice_content = scrapy.Field()     # HTML文本，剔除了scrapt等无效标签内容
+    notice_content = scrapy.Field()     # HTML文本，剔除了<script>等无效标签内容
     attachment = scrapy.Field()         # 可能的数组，包含附件文件的url和filename
     timestamp = scrapy.Field()
+    files_urls = scrapy.Field()
+    files = scrapy.Field()
+    images_urls = scrapy.Field()
+    images = scrapy.Field()
 
 
 class BidNoticeItem(NoticeBaseItem):       # cmccb2b招标公告

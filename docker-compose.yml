@@ -28,6 +28,7 @@ services:
 
     volumes:
       - log_volume:/app/logs
+      - ../data/download:/data/download
 
   flask:
     build:

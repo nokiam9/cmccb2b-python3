@@ -66,9 +66,28 @@ ROBOTSTXT_OBEY = False          # ignore scrapy limited setting of website
 ITEM_PIPELINES = {
     # TODO：此处只是定义变量，实际import在crawler中调用，因此必须用全路径，今后考虑加载到pypi中
     'cmccb2b.scrapy_pymongo.pipeline.PymongoPipeline': 300,
-    # 'cmccb2b.pipelines.Cmccb2bPipeline': 300,
     # 'cmccb2b.pipelines.JsonWriterPipeline': 400
+    'scrapy.pipelines.files.FilesPipeline': 1,  # download files with high level
+    'scrapy.pipelines.images.FilesPipeline': 2  # download images
 }
+
+MEDIA_ALLOW_REDIRECTS = True
+
+FILES_STORE = '/data/download/files/'
+FILES_URLS_FIELD = 'files_urls'
+FILES_RESULT_FIELD = 'files'
+FILES_EXPIRES = 120
+
+IMAGES_STORE = '/data/download/images/'
+IMAGES_URLS_FIELD = 'images_urls'
+IMAGES_RESULT_FIELD = 'images'
+IMAGES_EXPIRES = 120
+IMAGES_THUMBS = {
+    'small': (50, 50),
+    'big': (270, 270),
+}
+IMAGES_MIN_HEIGHT = 110
+IMAGES_MIN_WIDTH = 110
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

@@ -14,6 +14,7 @@ COPY ./app /app/
 
 EXPOSE 6800
 VOLUME /app/logs
+VOLUME /data/download
 
 # 必须在scrapy.cfg所在的目录启动scrapyd！！！
 WORKDIR /app

@@ -19,6 +19,8 @@ fi
 docker network create cmccb2b_net
 
 if test ${mode} = 1 ; then
+    echo "Notice: for scrapy download pipeline, pls RUN:"
+    echo "  sudo ln -s ../data /data"
     docker-compose -f mongo/mongo.yml -f mongo/mongo.override.yml up -d
 else
     docker-compose -f mongo/mongo.yml up -d
