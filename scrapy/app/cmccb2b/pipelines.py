@@ -23,7 +23,7 @@ class AttachmentPipeline(FilesPipeline):
             if success:
                 item[FILES_FIELD].append(file_info_or_error)
             else:
-                raise DropItem('Some attachment urls download failed')
+                raise DropItem(u'Some attachment urls download failed')
         return item
 
 

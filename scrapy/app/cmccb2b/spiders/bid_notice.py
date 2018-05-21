@@ -12,7 +12,7 @@ class BidNoticeSpider(scrapy.Spider):
     domain = 'https://b2b.10086.cn'
 
     base_query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType='  # +[12357]
-    content_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='  # +id(int)
+    base_content_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='  # +id(int)
 
     def __init__(self, type_id, *args, **kwargs):
         """
@@ -99,7 +99,7 @@ class BidNoticeSpider(scrapy.Spider):
                 rec += 1
                 # Get context from another parse and append field in item[]
                 yield scrapy.Request(
-                      url=self.content_url+str(item['nid']),
+                      url=self.base_content_url+str(item['nid']),
                       meta={'item': item},
                       callback=self.parse_of_content)
 
