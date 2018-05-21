@@ -2,6 +2,10 @@ from scrapy.pipelines.files import FilesPipeline
 from scrapy.http import Request
 from scrapy.exceptions import DropItem
 
+FILES_URLS_FIELD = 'attachment_urls'
+FILES_URLS_SUB_FIELD = 'url'
+FILES_FIELD = 'attachment_files'
+
 
 class AttachmentPipeline(FilesPipeline):
     """ Download attachment files for Pipeline """
@@ -11,13 +15,13 @@ class AttachmentPipeline(FilesPipeline):
     #     return 'full/%s' % filename
 
     def get_media_requests(self, item, info):
-        for doc in item['attachment_urls']:
-            yield Request(doc['url'])
+        for doc in item[FILES_URLS_FIELD]:
+            yield Request(doc[FILES_URLS_SUB_FIELD])
 
     def item_completed(self, results, item, info):
         for success, file_info_or_error in results:
             if success:
-                item['attachment_files'].append(file_info_or_error)
+                item[FILES_FIELD].append(file_info_or_error)
             else:
                 raise DropItem('Some attachment urls download failed')
         return item

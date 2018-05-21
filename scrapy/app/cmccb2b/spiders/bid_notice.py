@@ -11,6 +11,9 @@ class BidNoticeSpider(scrapy.Spider):
     name = 'BidNotice'
     domain = 'https://b2b.10086.cn'
 
+    base_query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType='  # +[12357]
+    content_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='  # +id(int)
+
     def __init__(self, type_id, *args, **kwargs):
         """
         Construct
@@ -34,10 +37,7 @@ class BidNoticeSpider(scrapy.Spider):
         else:
             self.logger.info(u"Set crawler argument with type_id={0}".format(self.type_id))
 
-        self.query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType=' \
-                         + str(self.type_id)
-        self.context_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='  # append with id(int)
-
+        self.query_url = self.base_query_url + str(self.type_id)
         self.current_page = 1
         self.page_size = 20
         self.form_data = {
@@ -99,7 +99,7 @@ class BidNoticeSpider(scrapy.Spider):
                 rec += 1
                 # Get context from another parse and append field in item[]
                 yield scrapy.Request(
-                      url=self.context_url+str(item['nid']),
+                      url=self.content_url+str(item['nid']),
                       meta={'item': item},
                       callback=self.parse_of_content)
 
@@ -126,17 +126,15 @@ class BidNoticeSpider(scrapy.Spider):
         item = response.meta['item']
         item['notice_url'] = response.url
         item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # HTML剔除script等标签
+        item['attachment_urls'] = []
+        item['attachment_files'] = []
 
-        # 解析，并以数组方式保存附件文件信息
-        tag = response.xpath("//a[contains(@href, '/b2b/main/commonDownload.html?')]")
-        if len(tag) > 0:
-            # Notice：Mongo中的字段可以定义为数组，比标准SQL更灵活
-            item['attachment'] = []
-            for doc in tag:
-                url = self.domain + doc.xpath("@href").extract_first()
-                filename = doc.xpath('font/text()').extract_first()
-                item['attachment'].append({
-                    'url': url,
-                    'filename': filename
-                })
+        # 解析html，并以数组方式保存附件文件信息
+        for doc in response.xpath("//a[contains(@href, '/b2b/main/commonDownload.html?')]"):
+            url = self.domain + doc.xpath("@href").extract_first()
+            description = doc.xpath('font/text()').extract_first()
+            item['attachment_urls'].append({
+                'url': url,
+                'description': description
+            })
         yield item
