@@ -7,21 +7,21 @@
 import scrapy
 
 
-class NoticeBaseItem(scrapy.Item):      # 各类招标信息的公共基类，包含必须的字段信息
+class NoticeBaseItem(scrapy.Item):          # 各类招标信息的公共基类，包含必须的字段信息
     spider = scrapy.Field()
-    nid = scrapy.Field()                # Primary Key
+    nid = scrapy.Field()                    # Primary Key
     source_ch = scrapy.Field()
     notice_type = scrapy.Field()
     title = scrapy.Field()
     published_date = scrapy.Field()
     notice_url = scrapy.Field()
-    notice_content = scrapy.Field()     # HTML文本，剔除了<script>等无效标签内容
-    attachment = scrapy.Field()         # 可能的数组，包含附件文件的url和filename
+    notice_content = scrapy.Field()         # HTML文本，剔除了<script>等无效标签内容
+
     timestamp = scrapy.Field()
-    files_urls = scrapy.Field()
-    files = scrapy.Field()
-    images_urls = scrapy.Field()
-    images = scrapy.Field()
+    attachment_urls = scrapy.Field()        # spider初始化为list，包含附件文件的url和description
+    attachment_files = scrapy.Field()       # spider初始化为list，AttachmentPipeline自动填充下载信息
+    # images_urls = scrapy.Field()
+    # images = scrapy.Field()
 
 
 class BidNoticeItem(NoticeBaseItem):       # cmccb2b招标公告

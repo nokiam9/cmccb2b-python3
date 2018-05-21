@@ -81,57 +81,21 @@ class GsGovProcurementSpider(scrapy.Spider):
             callback=self.parse)
 
     def parse_of_content(self, response):
-        """ Get context HTML from nid """
+        """ 解析html文本，找出并存储附件信息｛url: description｝ """
         item = response.meta['item']
         item['notice_url'] = response.url
         item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # content存储公告HTML，剔除script等标签
+        item['attachment_urls'] = []
+        item['attachment_files'] = []
 
-        tag = response.xpath("//a[contains(@href, '/upload/article/')]")
-        if len(tag) == 0:
-            yield item
-        else:
-            item['files_urls'] = []
-            for doc in tag:
-                url = self.domain + doc.xpath("@href").extract_first()
-                # filename = doc.xpath('text()').extract_first()
-                item['files_urls'].append(url)
-            yield item
-
-            # Notice：Mongo中的字段可以定义为数组，比标准SQL更灵活
-            # item['attachment'] = []
-            # for doc in tag:
-            #     url = self.domain + doc.xpath("@href").extract_first()
-            #     filename = doc.xpath('text()').extract_first()
-            #     item['attachment'].append({
-            #         'url': url,
-            #         'filename': filename
-            #     })
-            # yield scrapy.Request(
-            #     url=item['attachment'][0]['url'],
-            #     meta={'item': item, 'total': len(tag), 'cur': 0},
-            #     callback=self.parse_of_attachment
-            # )
-
-    # def parse_of_attachment(self, response):
-    #     """ 解析并获取公告html中包含的附件信息，利用meta传递数据实现循环的控制 """
-    #     item = response.meta['item']
-    #     total = response.meta['total']
-    #     cur = response.meta['cur']
-    #
-    #     '''mongo要求doc是utf－8格式，存储二进制文件可采用bson.binary.Binary方式，但BSON限制小于16M
-    #     也可以采用mongo外挂的gridfs的方法，但需要手工处理doc的关联
-    #     从性能考虑，本例不在MONGO中储存附件原文件，以下代码仅供参考'''
-    #     # content = StringIO(response.body)
-    #     # item['attachment'][cur]['content'] = Binary(content.getvalue())
-    #
-    #     cur += 1
-    #     if cur < total:
-    #         yield scrapy.Request(
-    #             url=item['attachment'][cur]['url'],
-    #             meta={'item': item, 'total': total, 'cur': cur},
-    #             callback=self.parse_of_attachment)
-    #     else:
-    #         yield item
+        for doc in response.xpath("//a[contains(@href, '/upload/article/')]"):
+            url = self.domain + doc.xpath("@href").extract_first()
+            description = doc.xpath('text()').extract_first()
+            item['attachment_urls'].append({
+                'url': url,
+                'description': description
+            })
+        yield item
 
     def fix_open_time(self, string):
         """ 分析字符串的内容特征，提取并返回开标日期, 如果格式错误，返回1970/1/1 """
@@ -160,5 +124,6 @@ class GsGovProcurementSpider(scrapy.Spider):
             return datetime.datetime(year, month, day, hour, minute, second)
         except ValueError:
             return datetime.datetime.utcfromtimestamp(0)
+
 
 
