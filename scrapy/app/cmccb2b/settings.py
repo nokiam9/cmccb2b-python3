@@ -64,29 +64,10 @@ ROBOTSTXT_OBEY = False          # ignore scrapy limited setting of website
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # TODO：此处只是定义变量，实际import在crawler中调用，因此必须用全路径，今后考虑加载到pypi中
-    'cmccb2b.scrapy_pymongo.pipeline.PymongoPipeline': 300,
-    'cmccb2b.pipelines.AttachmentPipeline': 1,  # download files with high level
+    'cmccb2b.pipelines.attachment.AttachmentPipeline': 1,
+    'cmccb2b.pipelines.pymongo.PymongoPipeline': 300,
     # 'scrapy.pipelines.images.FilesPipeline': 2  # download images
 }
-
-MEDIA_ALLOW_REDIRECTS = True
-
-FILES_STORE = '/download/files/'
-# FILES_URLS_FIELD = 'attachment_urls'          ＃ 取消，因为启用自定义files.pipeline
-# FILES_RESULT_FIELD = 'attachment_files'       ＃ 取消，因为启用自定义files.pipeline
-FILES_EXPIRES = 120
-
-# IMAGES_STORE = '/data/download/images/'
-# IMAGES_URLS_FIELD = 'images_urls'
-# IMAGES_RESULT_FIELD = 'images'
-# IMAGES_EXPIRES = 120
-# IMAGES_THUMBS = {
-#     'small': (50, 50),
-#     'big': (270, 270),
-# }
-# IMAGES_MIN_HEIGHT = 110
-# IMAGES_MIN_WIDTH = 110
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -109,7 +90,7 @@ FILES_EXPIRES = 120
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-# Defined for scrapy mongodb
+# [Configure for scrapy_pymongo.pipeline]
 # URI: mongodb://[username:password@]host1[:port1],...[,hostN[:portN]]][/[database][?options]]
 MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://localhost:27017
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称。默认值scrapy
@@ -118,7 +99,26 @@ MONGODB_SEPARATE_COLLECTIONS = True         # 可选的，根据spider.name设�
 MONGODB_UNIQUE_KEY = [('nid', 1)]           # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
 MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬取，<0：报错并复位为0
 
-# TODO: Define for scrapy.mail
+# [Configure for AttachmentPipeline based on scrapy.files.pipeline]
+MEDIA_ALLOW_REDIRECTS = True
+
+FILES_STORE = '/download/files/'
+# FILES_URLS_FIELD = 'attachment_urls'          ＃ 取消，因为启用自定义files.pipeline
+# FILES_RESULT_FIELD = 'attachment_files'       ＃ 取消，因为启用自定义files.pipeline
+FILES_EXPIRES = 120
+
+# IMAGES_STORE = '/data/download/images/'
+# IMAGES_URLS_FIELD = 'images_urls'
+# IMAGES_RESULT_FIELD = 'images'
+# IMAGES_EXPIRES = 120
+# IMAGES_THUMBS = {
+#     'small': (50, 50),
+#     'big': (270, 270),
+# }
+# IMAGES_MIN_HEIGHT = 110
+# IMAGES_MIN_WIDTH = 110
+
+# [Configure for scrapy.mail]
 # MAIL_FROM = '13901214002@139.com'         #
 # MAIL_HOST = 'smtp.139.com'		    	# 使用的邮箱的smtp服务器地址，这里是163的smtp地址
 # MAIL_PORT = 465                           # 25-SMTP, 465-SMTPS（SMTP-over-SSL）
@@ -127,6 +127,7 @@ MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬
 # MAIL_TLS = True                           # 强制使用STARTTLS
 # MAIL_SSL = True                           # 强制使用SSL加密连接
 
+# [Public Configure]
 LOG_LEVEL = 'INFO'
 
 
