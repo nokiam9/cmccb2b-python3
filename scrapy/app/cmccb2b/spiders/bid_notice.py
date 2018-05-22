@@ -126,10 +126,9 @@ class BidNoticeSpider(scrapy.Spider):
         item = response.meta['item']
         item['notice_url'] = response.url
         item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # HTML剔除script等标签
-        item['attachment_urls'] = []
-        item['attachment_files'] = []
 
         # 解析html，并以数组方式保存附件文件信息
+        item['attachment_urls'] = []
         for doc in response.xpath("//a[contains(@href, '/b2b/main/commonDownload.html?')]"):
             url = self.domain + doc.xpath("@href").extract_first()
             description = doc.xpath('font/text()').extract_first()

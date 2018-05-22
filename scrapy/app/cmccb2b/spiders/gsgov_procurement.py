@@ -85,9 +85,8 @@ class GsGovProcurementSpider(scrapy.Spider):
         item = response.meta['item']
         item['notice_url'] = response.url
         item['notice_content'] = filter_tags(response.body.decode('utf-8'))      # content存储公告HTML，剔除script等标签
-        item['attachment_urls'] = []
-        item['attachment_files'] = []
 
+        item['attachment_urls'] = []
         for doc in response.xpath("//a[contains(@href, '/upload/article/')]"):
             url = self.domain + doc.xpath("@href").extract_first()
             description = doc.xpath('text()').extract_first()
