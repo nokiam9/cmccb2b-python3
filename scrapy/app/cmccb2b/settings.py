@@ -72,7 +72,7 @@ ITEM_PIPELINES = {
 
 MEDIA_ALLOW_REDIRECTS = True
 
-FILES_STORE = '/data/download/files/'
+FILES_STORE = '/download/files/'
 # FILES_URLS_FIELD = 'attachment_urls'          ＃ 取消，因为启用自定义files.pipeline
 # FILES_RESULT_FIELD = 'attachment_files'       ＃ 取消，因为启用自定义files.pipeline
 FILES_EXPIRES = 120
@@ -126,4 +126,8 @@ MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬
 # MAIL_PASS = 'eos5d3'			            # 密码
 # MAIL_TLS = True                           # 强制使用STARTTLS
 # MAIL_SSL = True                           # 强制使用SSL加密连接
+
+LOG_LEVEL = 'INFO'
+
+
 

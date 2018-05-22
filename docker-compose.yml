@@ -27,8 +27,7 @@ services:
       - cmccb2b_net
 
     volumes:
-      - log_volume:/app/logs
-      - ../data/download:/data/download
+      - download_volume:/download
 
   flask:
     build:
@@ -39,6 +38,9 @@ services:
 
     networks:
       - cmccb2b_net
+
+    volumes:
+      - download_volume:/download
 
     environment:
       - FLASK_APP=app/main.py
@@ -90,4 +92,4 @@ networks:
 
 
 volumes:
-  log_volume:
+  download_volume:      # Public volume for Scrapy & Flask where stored downloaded files & images
