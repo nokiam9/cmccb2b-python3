@@ -64,7 +64,7 @@ ROBOTSTXT_OBEY = False          # ignore scrapy limited setting of website
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'cmccb2b.pipelines.attachment.AttachmentPipeline': 1,
+    # 'cmccb2b.pipelines.attachment.AttachmentPipeline': 1,
     'cmccb2b.pipelines.pymongo.PymongoPipeline': 300,
     # 'scrapy.pipelines.images.FilesPipeline': 2  # download images
 }
@@ -99,16 +99,14 @@ MONGODB_SEPARATE_COLLECTIONS = True         # 可选的，根据spider.name设�
 MONGODB_UNIQUE_KEY = [('nid', 1)]           # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
 MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬取，<0：报错并复位为0
 
-""" Configure for scrapy.files.pipeline """
+""" Configure for FilesPipeline """
 MEDIA_ALLOW_REDIRECTS = True
 FILES_STORE = '/download/files/'
 FILES_URLS_FIELD = 'attachment_urls'
 FILES_RESULT_FIELD = 'attachment_files'
 FILES_EXPIRES = 120
 
-""" Configure for AttachmentPipeline based on scrapy.files.pipeline """
-FILES_URLS_FIELD_KEY = 'url'                # AttachmentPipeline定义，要求FILES_URLS_FIELD为list type
-
+""" Configure for ImagesPipeline """
 # IMAGES_STORE = '/data/download/images/'
 # IMAGES_URLS_FIELD = 'images_urls'
 # IMAGES_RESULT_FIELD = 'images'
@@ -120,7 +118,10 @@ FILES_URLS_FIELD_KEY = 'url'                # AttachmentPipeline定义，要求F
 # IMAGES_MIN_HEIGHT = 110
 # IMAGES_MIN_WIDTH = 110
 
-# [Configure for scrapy.mail]
+""" Configure for AttachmentPipeline based on scrapy.files.pipeline """
+FILES_URLS_FIELD_KEY = 'url'                # AttachmentPipeline定义，要求FILES_URLS_FIELD为list type
+
+""" Configure for scrapy.mail """
 # MAIL_FROM = '13901214002@139.com'         #
 # MAIL_HOST = 'smtp.139.com'		    	# 使用的邮箱的smtp服务器地址，这里是163的smtp地址
 # MAIL_PORT = 465                           # 25-SMTP, 465-SMTPS（SMTP-over-SSL）
