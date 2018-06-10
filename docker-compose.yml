@@ -92,4 +92,4 @@ networks:
 
 
 volumes:
-  download_volume:      # Public volume for Scrapy & Flask where stored downloaded files & images
+  download_volume:      # Public volume for Scrapy & Flask where store downloaded files & images

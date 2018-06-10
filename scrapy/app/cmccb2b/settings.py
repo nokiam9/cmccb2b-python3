@@ -90,7 +90,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-# [Configure for scrapy_pymongo.pipeline]
+""" Configure for Pymongo.pipeline """
 # URI: mongodb://[username:password@]host1[:port1],...[,hostN[:portN]]][/[database][?options]]
 MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://localhost:27017
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称。默认值scrapy
@@ -99,13 +99,15 @@ MONGODB_SEPARATE_COLLECTIONS = True         # 可选的，根据spider.name设�
 MONGODB_UNIQUE_KEY = [('nid', 1)]           # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
 MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬取，<0：报错并复位为0
 
-# [Configure for AttachmentPipeline based on scrapy.files.pipeline]
+""" Configure for scrapy.files.pipeline """
 MEDIA_ALLOW_REDIRECTS = True
-
 FILES_STORE = '/download/files/'
-# FILES_URLS_FIELD = 'attachment_urls'          ＃ 取消，因为启用自定义files.pipeline
-# FILES_RESULT_FIELD = 'attachment_files'       ＃ 取消，因为启用自定义files.pipeline
+FILES_URLS_FIELD = 'attachment_urls'
+FILES_RESULT_FIELD = 'attachment_files'
 FILES_EXPIRES = 120
+
+""" Configure for AttachmentPipeline based on scrapy.files.pipeline """
+FILES_URLS_FIELD_KEY = 'url'                # AttachmentPipeline定义，要求FILES_URLS_FIELD为list type
 
 # IMAGES_STORE = '/data/download/images/'
 # IMAGES_URLS_FIELD = 'images_urls'
@@ -127,8 +129,7 @@ FILES_EXPIRES = 120
 # MAIL_TLS = True                           # 强制使用STARTTLS
 # MAIL_SSL = True                           # 强制使用SSL加密连接
 
-# [Public Configure]
+""" Public Configure """
 LOG_LEVEL = 'INFO'
-
 
 
