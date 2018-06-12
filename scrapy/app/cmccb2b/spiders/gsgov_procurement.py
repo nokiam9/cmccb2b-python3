@@ -48,7 +48,7 @@ class GsGovProcurementSpider(scrapy.Spider):
                 item['title'] = li.xpath("a/text()").extract_first()
 
                 line = li.xpath("p[1]/span/text()").extract_first().split('|')    # 第一行包含四个字段
-                item['open_time'] = self.fix_open_time(line[0])     # 日期格式有多种不规范形式
+                item['open_time'] = _fix_open_time(line[0])     # 日期格式有多种不规范形式
                 item['published_date'] = datetime.datetime.strptime(line[1][-20:-1], '%Y-%m-%d %H:%M:%S')
                 item['source_ch'] = line[2].split(u'：')[1]
                 item['agency'] = line[3].split(u'：')[1]
@@ -96,33 +96,34 @@ class GsGovProcurementSpider(scrapy.Spider):
             })
         yield item
 
-    def fix_open_time(self, string):
-        """ 分析字符串的内容特征，提取并返回开标日期, 如果格式错误，返回1970/1/1 """
-        year, month, day, hour, minute, second = 0, 0, 0, 0, 0, 0
-        words = strip_non_ascii(string).strip(' ').split(' ')  # 剔除中文字符，去除头尾空格，按中间空格分为date,time
 
+def _fix_open_time(self, string):
+    """ 分析字符串的内容特征，提取并返回开标日期, 如果格式错误，返回1970/1/1 """
+    year, month, day, hour, minute, second = 0, 0, 0, 0, 0, 0
+    words = strip_non_ascii(string).strip(' ').split(' ')  # 剔除中文字符，去除头尾空格，按中间空格分为date,time
+
+    try:
+        year, month, day = map(int, words[0].split('-'))
+    except ValueError:
         try:
-            year, month, day = map(int, words[0].split('-'))
+            year, month, day = map(int, words[0].split('/'))
+        except ValueError:
+            return datetime.datetime.utcfromtimestamp(0)
+
+    if len(words) > 1:
+        try:
+            hour, minute, second = map(int, words[1].split(':'))
         except ValueError:
             try:
-                year, month, day = map(int, words[0].split('/'))
+                second = 0
+                hour, minute = map(int, words[1].split(':'))
             except ValueError:
                 return datetime.datetime.utcfromtimestamp(0)
 
-        if len(words) > 1:
-            try:
-                hour, minute, second = map(int, words[1].split(':'))
-            except ValueError:
-                try:
-                    second = 0
-                    hour, minute = map(int, words[1].split(':'))
-                except ValueError:
-                    return datetime.datetime.utcfromtimestamp(0)
-
-        try:
-            return datetime.datetime(year, month, day, hour, minute, second)
-        except ValueError:
-            return datetime.datetime.utcfromtimestamp(0)
+    try:
+        return datetime.datetime(year, month, day, hour, minute, second)
+    except ValueError:
+        return datetime.datetime.utcfromtimestamp(0)
 
 
 
