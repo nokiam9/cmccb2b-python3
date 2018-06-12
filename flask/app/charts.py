@@ -1,10 +1,8 @@
-import datetime, json
 from pyecharts import Bar, Pie
 from pyecharts_javascripthon.api import TRANSLATOR
 
 from flask import render_template
-from mongoengine.queryset.visitor import Q
-from models import BidNotice
+from models import *
 
 
 REMOTE_HOST = "https://pyecharts.github.io/assets/js"
@@ -12,7 +10,7 @@ REMOTE_HOST = "https://pyecharts.github.io/assets/js"
 
 def chart_view01():
     # 从mongo中获取数据
-    (x, y) = _get_records_group_by_published_date(days_before=-30)
+    (x, y) = get_records_group_by_published_date(days_before=-30)
 
     # 设置bar图形的基本属性
     bar = Bar("招标公告发布趋势图", "From: cmccb2b")
@@ -40,7 +38,7 @@ def chart_view01():
 
 def chart_view02():
     # 从mongo中获取数据
-    (x, y) = _get_records_group_by_source_ch()
+    (x, y) = get_records_group_by_source_ch()
 
     bar = Bar("发布单位分析图")
     bar.add("发布单位", x, y,
@@ -65,7 +63,7 @@ def chart_view02():
 
 def chart_view03():
     # 从mongo中获取数据
-    (x, y) = _get_records_group_by_notice_type()
+    (x, y) = get_records_group_by_notice_type()
 
     # 设置bar图形的基本属性
     pie = Pie("公告类型分析图", "From: cmccb2b")
@@ -90,7 +88,7 @@ def chart_view03():
 
 def chart_view04():
     # 从mongo中获取数据
-    (x, y) = _get_records_group_by_timestamp(days_before=-30)
+    (x, y) = get_records_group_by_timestamp(days_before=-30)
 
     # 设置bar图形的基本属性
     bar = Bar("招标公告爬取时间图", "From: cmccb2b")
@@ -115,72 +113,6 @@ def chart_view04():
         script_list=bar.get_js_dependencies(),  # 默认设置，需要动态加载的js文件
     )
 
-
-def _get_records_group_by_published_date(days_before=-7):
-    k, v = [], []
-    now = datetime.datetime.utcnow() + datetime.timedelta(hours=8)  # TimeZone 8
-    for t0 in _get_days_list(now, days_before):
-        t1 = t0 + datetime.timedelta(days=1)
-        records = BidNotice.objects(Q(published_date__lte=t1) & Q(published_date__gte=t0)).count()
-        k.append(t0.strftime('%Y-%m-%d'))
-        v.append(records)
-    return k, v
-
-
-def _get_records_group_by_timestamp(days_before=-7):
-    k, v = [], []
-    now = datetime.datetime.utcnow() + datetime.timedelta(hours=8)  # TimeZone 8
-    for t0 in _get_days_list(now, days_before):
-        t1 = t0 + datetime.timedelta(days=1)
-        records = BidNotice.objects(Q(timestamp__lte=t1) & Q(timestamp__gte=t0)).count()
-        k.append(t0.strftime('%Y-%m-%d'))
-        v.append(records)
-    return k, v
-
-
-def _get_records_group_by_source_ch():
-    k, v = [], []
-    cursor = BidNotice.objects().aggregate(
-        {"$group": {"_id": "$source_ch", "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}}
-    )
-    for doc in cursor:
-        k.append(doc['_id'])
-        v.append(doc['count'])
-    return k, v
-
-
-def _get_records_group_by_notice_type():
-    k, v = [], []
-    cursor = BidNotice.objects().aggregate(
-        {"$group":
-            {"_id": "$notice_type", "count":
-                {"$sum": 1}
-             }
-         }
-    )
-    for doc in cursor:
-        k.append(doc['_id'])
-        v.append(doc['count'])
-    return k, v
-
-
-def _get_days_list(base_time, days_delta):
-    """
-    Function: 获得t0为基准的UTCTime日期序列数组，时间元素固定为0h0m0s，并按升序排列
-        days_delta为正数时，［t0, t0+1day...］; 为负数时，［...,t0-1day,t0］
-    """
-    arr = []
-    t0 = datetime.datetime(base_time.year, base_time.month, base_time.day)
-    if days_delta > 0:
-        for i in range(0, days_delta+1):
-            t = t0 + datetime.timedelta(days=i)
-            arr.append(t)
-    else:
-        for i in range(days_delta, 1):
-            t = t0 + datetime.timedelta(days=i)
-            arr.append(t)
-    return arr
 
 
 
