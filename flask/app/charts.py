@@ -2,7 +2,7 @@ from pyecharts import Bar, Pie
 from pyecharts_javascripthon.api import TRANSLATOR
 
 from flask import render_template
-from models import *
+from models import BidNotice
 
 
 REMOTE_HOST = "https://pyecharts.github.io/assets/js"
@@ -10,7 +10,7 @@ REMOTE_HOST = "https://pyecharts.github.io/assets/js"
 
 def chart_view01():
     # 从mongo中获取数据
-    (x, y) = get_records_group_by_published_date(days_before=-30)
+    (x, y) = BidNotice.get_records_group_by_published_date(days_before=-30)
 
     # 设置bar图形的基本属性
     bar = Bar("招标公告发布趋势图", "From: cmccb2b")
@@ -38,7 +38,7 @@ def chart_view01():
 
 def chart_view02():
     # 从mongo中获取数据
-    (x, y) = get_records_group_by_source_ch()
+    (x, y) = BidNotice.get_records_group_by_source_ch()
 
     bar = Bar("发布单位分析图")
     bar.add("发布单位", x, y,
@@ -63,7 +63,7 @@ def chart_view02():
 
 def chart_view03():
     # 从mongo中获取数据
-    (x, y) = get_records_group_by_notice_type()
+    (x, y) = BidNotice.get_records_group_by_notice_type()
 
     # 设置bar图形的基本属性
     pie = Pie("公告类型分析图", "From: cmccb2b")
@@ -88,7 +88,7 @@ def chart_view03():
 
 def chart_view04():
     # 从mongo中获取数据
-    (x, y) = get_records_group_by_timestamp(days_before=-30)
+    (x, y) = BidNotice.get_records_group_by_timestamp(days_before=-30)
 
     # 设置bar图形的基本属性
     bar = Bar("招标公告爬取时间图", "From: cmccb2b")

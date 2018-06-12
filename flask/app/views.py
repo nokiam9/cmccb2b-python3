@@ -1,7 +1,7 @@
 # # -*- coding: utf-8 -*-
 
 from flask import request, render_template, abort
-from models import *
+from models import BidNotice
 
 NOTICE_TYPE_CONFIG = {
     '0': '全部招标公告',
@@ -20,9 +20,8 @@ def index():
 
 
 def content_view(nid):
-    content = get_content(nid)
+    content = BidNotice.get_notice_content(nid=nid)
     if not content:
-        return nid
         abort(status=404)
     else:
         return content
@@ -40,7 +39,7 @@ def notice_page_view(type_id):
     except KeyError:
         abort(status=406)   # Unacceptable url para
 
-    todos_page = get_notice_pagination(
+    todos_page = BidNotice.get_notice_pagination(
         type_id=type_id,
         page_id=request.args.get('page_id', default=1, type=int),
         per_page=PAGE_SIZE
