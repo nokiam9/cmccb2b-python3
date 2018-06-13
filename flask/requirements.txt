@@ -4,3 +4,9 @@ flask==1.0.2
 pymongo==3.6
 flask_mongoengine==0.9.5
 pyecharts==0.5.3
+
+flask-debugtoolbar
+Flask-SQLAlchemy
+Flask-RESTful
+Flask-login
+flask-restful

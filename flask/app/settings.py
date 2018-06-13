@@ -5,7 +5,6 @@ MONGODB_SETTINGS = {'DB': 'cmccb2b',
                     'port': 27017,
                     'connect': False  # set for pymongo bug fix
                     }
-SECRET_KEY = "flask+mongoengine=<3"
+SECRET_KEY = "flask+mongoengine=<3"     # flask-debug必须设置该参数，为session提供加密处理
 
-# TESTING = True
 # DEBUG_TB_INTERCEPT_REDIRECTS = False
