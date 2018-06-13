@@ -9,10 +9,14 @@
     <meta http-equiv="description" content="Fulltext Search for Cmccb2b, Powered by xunsearch/1.4.11 "/>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <!--
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/redmond/jquery-ui.css"
           type="text/css" media="all"/>
+    -->
+    <link href="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <!-- <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> -->
+    <script src="https://cdn.bootcss.com/html5shiv/3.6.2/html5shiv.js"></script>
     <![endif]-->
     <!--[if lte IE 6]>
     <link rel="stylesheet" type="text/css" href="css/bootstrap-ie6.css"/>
@@ -184,8 +188,12 @@
             Powered by <a href="http://www.xunsearch.com/" target="_blank" title="开源免费的中文全文检索">xunsearch/1.4.11</a></p>
     </div>
 </footer>
+<!--
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+-->
+<script src="https://cdn.bootcss.com/jquery/1.6.2/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script type="text/javascript">
     $(function () {
         // input tips
