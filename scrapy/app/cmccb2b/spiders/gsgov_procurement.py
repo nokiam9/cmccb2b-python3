@@ -97,7 +97,7 @@ class GsGovProcurementSpider(scrapy.Spider):
         yield item
 
 
-def _fix_open_time(self, string):
+def _fix_open_time(string):
     """ 分析字符串的内容特征，提取并返回开标日期, 如果格式错误，返回1970/1/1 """
     year, month, day, hour, minute, second = 0, 0, 0, 0, 0, 0
     words = strip_non_ascii(string).strip(' ').split(' ')  # 剔除中文字符，去除头尾空格，按中间空格分为date,time
