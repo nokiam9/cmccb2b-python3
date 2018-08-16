@@ -86,7 +86,7 @@ class BidNotice (db.Document):
         k, v = [], []
         cursor = cls.objects().aggregate(
             {"$group":
-                {"_id": "$noftice_type", "count":
+                {"_id": "$notice_type", "count":
                     {"$sum": 1}
                  }
              }
