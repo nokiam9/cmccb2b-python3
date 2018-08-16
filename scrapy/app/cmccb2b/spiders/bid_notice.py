@@ -14,6 +14,14 @@ class BidNoticeSpider(scrapy.Spider):
     base_query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType='  # +[12357]
     base_content_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='  # +id(int)
 
+    # Bug101: 2018.8.10网站升级，增加了User-Agent格式和Referer跨站脚本的检测功能，并调整了notice_type
+    base_headers = {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) \
+        Chrome/68.0.3440.106 Mobile Safari/537.36',
+        'Referer': 'https://b2b.10086.cn/b2b/main/listVendorNotice.html?noticeType=2',
+    }
+    notice_type_list = ['1', '2', '3', '7', '8', '16']
+
     def __init__(self, type_id, *args, **kwargs):
         """
         Construct
@@ -24,14 +32,15 @@ class BidNoticeSpider(scrapy.Spider):
                 4:N/A，测试是2015年的数据，似乎已经被废弃
                 5:N/A
                 6:N/A
-                7:招标结果公示
+                7:候选人公示 (bug101更新：以前版本是招标结果公示)
                 8:供应商信息收集公告
                 9:N/A
+                16: 中选结果公示（bug101新增）
         """
         super(BidNoticeSpider, self).__init__(*args, **kwargs)
 
         self.type_id = str(int(type_id))
-        if self.type_id not in ['1', '2', '3', '7', '8']:
+        if self.type_id not in self.notice_type_list:
             self.logger.error(u"Unsupported type_id with {0} and abort!!!".format(type_id))
             raise NotSupported
         else:
@@ -55,6 +64,7 @@ class BidNoticeSpider(scrapy.Spider):
         return [scrapy.FormRequest(
             url=self.query_url,
             formdata=self.form_data,
+            headers=self.base_headers,
             callback=self.parse
         )]
 
@@ -99,9 +109,10 @@ class BidNoticeSpider(scrapy.Spider):
                 rec += 1
                 # Get context from another parse and append field in item[]
                 yield scrapy.Request(
-                      url=self.base_content_url+str(item['nid']),
-                      meta={'item': item},
-                      callback=self.parse_of_content)
+                    url=self.base_content_url+str(item['nid']),
+                    headers=self.base_headers,
+                    meta={'item': item},
+                    callback=self.parse_of_content)
 
         if rec == 0:
             self.logger.info(u"Find the end of query and close spider now! current page is %i.", self.current_page)
@@ -118,6 +129,7 @@ class BidNoticeSpider(scrapy.Spider):
         yield scrapy.FormRequest(
             url=self.query_url,
             formdata=self.form_data,
+            headers=self.base_headers,
             callback=self.parse
         )
 

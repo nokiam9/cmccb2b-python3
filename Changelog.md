@@ -1,3 +1,8 @@
+### V1.2 on 2018.8.16 ###
+- b2b.10086.cn于2018.8.10网站升级，增加了User-Agent格式和Referer跨站脚本的检测功能，并调整了notice_type
+
+
+
 ### 开发记录 2018.04 ###
 - 建立venv/的virtualenv，启动方式为`$ source venv/bin/activate`，退出方式为`$ deactivate`
 - 新增`.gitignore`, 避免git引入开发过程文件
