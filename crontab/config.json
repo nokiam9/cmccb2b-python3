@@ -27,6 +27,11 @@
   },
   {
     "comment": "curl scrapyd:6800",
+    "schedule": "36 * * * *",
+    "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=BidNotice -d type_id=16"
+  },
+  {
+    "comment": "curl scrapyd:6800",
     "schedule": "03 * * * *",
     "command": "curl http://scrapy:6800/schedule.json -d project=default -d spider=GsGovProcurement",
     "onstart":true
