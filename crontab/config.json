@@ -39,8 +39,7 @@
   {
 	"comment":"Cron xs update index",
 	"schedule":"*/15 * * * *",
-	"command":"php /app/xs_update_index.php",
-	"container":"xunsearch",
+	"command":"curl xunsearch/xs_update_index.php",
 	"onstart":true
   }
 ]
