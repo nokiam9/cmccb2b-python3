@@ -25,7 +25,7 @@
     <script>
         // Updated by SJ: 选中翻页按钮，执行ajax刷新，用于pagination.html
         function selectContent(nid) {
-            var url = window.location.protocol + "//" + window.location.hostname + "/content/" + nid;
+            var url = "http://www.caogo.cn/content/" + nid;
             window.open(url);
         };
     </script>

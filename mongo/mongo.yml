@@ -12,7 +12,7 @@ services:
 
     # Notice: check this user_date volume
     volumes:
-      - ../../data/db:/data/db
+      - ../../cmdata/db:/data/db
       - ./scripts:/data/scripts:ro
       - ./migrations:/data/migrations:ro
 

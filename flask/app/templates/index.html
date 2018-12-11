@@ -29,7 +29,7 @@
     <script type="text/javascript" t>
         // 获取view，并刷新main数据区
         function getNoticeView() {
-            <!-- 设置ajax页面的url地址-->
+            // <!-- 设置ajax页面的url地址-->
             var type_id = document.getElementsByName('currentType')[0].value;
             var page_id = document.getElementsByName('currentPage')[0].value;
             var url = "/notice/pagination/" + type_id + '?page_id=' + page_id;
@@ -61,20 +61,21 @@
 
         // 选中翻页按钮，执行ajax刷新，用于pagination.html
         function selectContent(nid) {
-            var url = window.location.protocol + "//" + window.location.hostname + "/content/" + nid;
+            var url = window.location.protocol + "//" + window.location.host + "/content/" + nid;
             window.open(url);
         }
 
         //打开新窗口，显示scrapy monitor
         function selectScrapyd() {
-            var url = window.location.protocol + "//" + window.location.hostname + ":6800";
+            var url ="http://scrapy.caogo.cn";
             window.open(url)
+
         }
 
         //打开新窗口，显示搜索页面
         function selectSearch(obj) {
             //   http://0.0.0.0:9000/search.php?q=%E7%94%98%E8%82%83&f=_all&s=relevance
-            var url = window.location.protocol + "//" + window.location.hostname + ":9000/search.php?q="
+            var url = "http://xunsearch.caogo.cn/search.php?q="
                 + document.getElementsByName('mystr')[0].value + "&f=_all&s=relevance";
             window.open(url)
         }

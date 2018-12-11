@@ -1,26 +1,23 @@
 version: '2'
 
 services:
-  nginx:
+  proxy:
     build:
-      context: nginx/
-    image: cmccb2b/nginx
-    container_name: nginx
+      context: proxy/
+    image: hub.caogo.cn/cmccb2b/proxy
+    container_name: cm-proxy
     restart: always
 
     networks:
       - cmccb2b_net
     ports:
       - "80:80"
-      - "6800:6800"
-      - "9000:9000"
-      - "443:443"
 
   scrapy:
     build:
       context: scrapy/
-    image: cmccb2b/scrapy
-    container_name: scrapy
+    image: hub.caogo.cn/cmccb2b/scrapy
+    container_name: cm-scrapy
     restart: always
 
     networks:
@@ -32,8 +29,8 @@ services:
   flask:
     build:
       context: flask/
-    image: cmccb2b/flask
-    container_name: flask
+    image: hub.caogo.cn/cmccb2b/flask
+    container_name: cm-flask
     restart: always
 
     networks:
@@ -47,11 +44,11 @@ services:
       - FLASK_DEBUG=1
       - 'RUN=flask run --host=0.0.0.0 --port=80'
 
-  crontab:
+  cronjobs:
     build:
-      context: crontab/
-    image: cmccb2b/crontab
-    container_name: crontab
+      context: cronjobs/
+    image: hub.caogo.cn/cmccb2b/cronjobs
+    container_name: cm-cronjobs
     restart: always
 
     networks:
@@ -64,22 +61,22 @@ services:
     build:
       context: xunsearch/
       dockerfile: xunsearch-server.dockerfile
-    image: cmccb2b/xunsearch-server
-    container_name: xunsearch-server
+    image: hub.caogo.cn/cmccb2b/xunsearch-server
+    container_name: cm-xunsearch-server
     restart: always
 
     networks:
       - cmccb2b_net
 
     volumes:
-      - ../data/xunsearch:/usr/local/xunsearch/data
+      - ../cmdata/xunsearch:/usr/local/xunsearch/data
 
   xunsearch:
     build:
       context: xunsearch/
       dockerfile: xunsearch.dockerfile
-    image: cmccb2b/xunsearch
-    container_name: xunsearch
+    image: hub.caogo.cn/cmccb2b/xunsearch
+    container_name: cm-xunsearch
     restart: always
 
     networks:

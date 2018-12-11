@@ -1,13 +1,14 @@
-## Docker flask based on flask app ##
+# Docker flask based on flask app
 
 主要功能：以容器形式封装flask，nginx和uwsgi  
 启动方式：`docker-compose up -d`  
-停止方式：`docker-compose down`   
+停止方式：`docker-compose down`
 访问方式：浏览器访问0.0.0.0:80  
 
 [基础镜像：tiangolo/uwsgi-nginx-flask-docker](https://github.com/tiangolo/uwsgi-nginx-flask-docker)
 
-### 基本概述 ###
+## 基本概述
+
 - `main.py`：app的主入口，负责启动app并设置url路径和对应的函数
 - `models.py`：存在所有的数据定义，注意MongoDB的引擎设置也在其中
 - `views.py`：存放所有web页面的函数，在`main.py`使用app.add_route_rule方法
