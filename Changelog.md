@@ -1,10 +1,12 @@
 # 最新进展 on 2018.12.12
 
 - 启用www.caogo.cn, scrapy.caogo.cn, xunsearch.caogo.cn等3个站点，并相应修改flask和php
-- 默认是http方式，未来在ECS的NGINX中采用https；
-- 本次测试时需要修改/etc/host，将3个站点指向locaohost
+- 本次测试时需要修改/etc/host，将3个站点指向localhost
 - 重构docker-compose，修改container的名字，数据目录修改为cmdata
+
+- docker集群仅提供http，拟后续在ECS的NGINX中统一支持ttps，并提供http强制转换；
 - nginx改造为proxy，crontab改为cronjobs（但尚未取消docker in docker）
+- mongo的container name还没有修改
 
 ## V1.3 on 2018.8.16
 

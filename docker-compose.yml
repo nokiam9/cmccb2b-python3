@@ -4,7 +4,7 @@ services:
   proxy:
     build:
       context: proxy/
-    image: hub.caogo.cn/cmccb2b/proxy
+    image: cmccb2b/proxy
     container_name: cm-proxy
     restart: always
 
@@ -16,7 +16,7 @@ services:
   scrapy:
     build:
       context: scrapy/
-    image: hub.caogo.cn/cmccb2b/scrapy
+    image: cmccb2b/scrapy
     container_name: cm-scrapy
     restart: always
 
@@ -29,7 +29,7 @@ services:
   flask:
     build:
       context: flask/
-    image: hub.caogo.cn/cmccb2b/flask
+    image: cmccb2b/flask
     container_name: cm-flask
     restart: always
 
@@ -47,7 +47,7 @@ services:
   cronjobs:
     build:
       context: cronjobs/
-    image: hub.caogo.cn/cmccb2b/cronjobs
+    image: cmccb2b/cronjobs
     container_name: cm-cronjobs
     restart: always
 
@@ -61,7 +61,7 @@ services:
     build:
       context: xunsearch/
       dockerfile: xunsearch-server.dockerfile
-    image: hub.caogo.cn/cmccb2b/xunsearch-server
+    image: cmccb2b/xunsearch-server
     container_name: cm-xunsearch-server
     restart: always
 
@@ -75,7 +75,7 @@ services:
     build:
       context: xunsearch/
       dockerfile: xunsearch.dockerfile
-    image: hub.caogo.cn/cmccb2b/xunsearch
+    image: cmccb2b/xunsearch
     container_name: cm-xunsearch
     restart: always
 
