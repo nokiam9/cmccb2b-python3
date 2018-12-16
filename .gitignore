@@ -15,6 +15,9 @@ deploy_key_rsa
 # Pycharm
 .idea
 
+# Vs Code
+.vscode
+
 # Mac OS
 .DS_Store
 
