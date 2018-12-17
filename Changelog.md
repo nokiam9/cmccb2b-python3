@@ -2,7 +2,7 @@
 
 ## V1.4 on 2018.12
 
-- **重大变化**：docker集群仅提供http:8080，由Host主机的NGINX统一支持https，并指向docker中不同容器提供反向代理；
+- **重大变化**：docker集群仅提供http，由Host主机的NGINX统一支持https，并指向docker中不同容器提供反向代理；
 - 启用 www.caogo.cn、scrapy.caogo.cn、xunsearch.caogo.cn 3个站点，并相应修改html和php
 - 重构docker-compose，修改container的名字，数据目录修改为cmdata
 - nginx改造为proxy，crontab改为cronjobs
@@ -10,7 +10,8 @@
 
 ---
 
-- 本地测试时需要修改/etc/host，将3个站点指向localhost
+- 本地测试时需要修改/etc/host，将3个站点指向localhost, docker-compose.yml中cm-proxy必须暴露80端口
+- ECS生产环境部署时，可以修改docker-compose.yml中cm-proxy的自定义暴露端口，并响应修改系统级NGINX的proxy.conf配置
 - mongo的container name还没有修改
 
 ## V1.3 on 2018.8.16
