@@ -13,6 +13,10 @@ error_reporting(E_ALL);
 // 强制指定编码，防止浏览器显示乱码
 header("Content-type:text/html;charset=utf-8");
 
+// Bugfix: 如果更新的数据量很大，cronjobs以curl方式执行php的时间可能超过30s，导致被web server强制退出
+ignore_user_abort(true); // 设置后台运行，不受前端断开连接影响
+set_time_limit(0); // 脚本运行时间无限制
+
 // 加载XS LIB，并取得index和document
 $indexer=connect_index();
 $manager=connect_mongodb();

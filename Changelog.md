@@ -1,11 +1,16 @@
-# 最新进展 on 2018.12.12
+# 开发记录
 
-- 启用www.caogo.cn, scrapy.caogo.cn, xunsearch.caogo.cn等3个站点，并相应修改flask和php
-- 本次测试时需要修改/etc/host，将3个站点指向localhost
+## V1.4 on 2018.12
+
+- **重大变化**：docker集群仅提供http:8080，由Host主机的NGINX统一支持ttps，并指向docker中不同容器提供反向代理；
+- 启用 www.caogo.cn、scrapy.caogo.cn、xunsearch.caogo.cn 3个站点，并相应修改html和php
 - 重构docker-compose，修改container的名字，数据目录修改为cmdata
+- nginx改造为proxy，crontab改为cronjobs
+- cronjobs的定时xunsearch索引更新改为curl方式，并修改php文件解决前台运行超过30s中断的问题
 
-- docker集群仅提供http，拟后续在ECS的NGINX中统一支持ttps，并提供http强制转换；
-- nginx改造为proxy，crontab改为cronjobs（但尚未取消docker in docker）
+---
+
+- 本地测试时需要修改/etc/host，将3个站点指向localhost
 - mongo的container name还没有修改
 
 ## V1.3 on 2018.8.16
