@@ -2,7 +2,7 @@
 
 ## V1.4 on 2018.12
 
-- **重大变化**：docker集群仅提供http:8080，由Host主机的NGINX统一支持ttps，并指向docker中不同容器提供反向代理；
+- **重大变化**：docker集群仅提供http:8080，由Host主机的NGINX统一支持https，并指向docker中不同容器提供反向代理；
 - 启用 www.caogo.cn、scrapy.caogo.cn、xunsearch.caogo.cn 3个站点，并相应修改html和php
 - 重构docker-compose，修改container的名字，数据目录修改为cmdata
 - nginx改造为proxy，crontab改为cronjobs
@@ -36,6 +36,3 @@
 
 - `pip install scrpay`有bug，必须提前安装`incremental`(manage python project version )
 - `pip install flask-mongoengine`有bug，必须提前安装nose, rednose, converage
-
-
-

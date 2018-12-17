@@ -2,8 +2,6 @@
 #FROM daocloud.io/ubuntu:trusty
 FROM ubuntu:14.04
 
-MAINTAINER sj0225@icloud.com
-
 # APT 自动安装 PHP 及其Extension的依赖包，如需其他依赖包在此添加
 RUN apt-get update && \
     apt-get -y install curl wget unzip \
