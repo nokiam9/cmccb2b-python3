@@ -11,6 +11,10 @@ class BidNoticeSpider(scrapy.Spider):
     name = 'BidNotice'
     domain = 'https://b2b.10086.cn'
 
+    # Bug102: 2019.5.30网站升级，Ajax的formdata增加_qt字段，键值隐藏在主HTML中，同时增加了Cookie检测
+    #   为此增加了pre_parse()步骤，读取主HTML中_qt的内容，并填充到parse()的formdata字典
+    start_url = 'https://b2b.10086.cn/b2b/main/listVendorNotice.html?noticeType=2'
+
     base_query_url = 'https://b2b.10086.cn/b2b/main/listVendorNoticeResult.html?noticeBean.noticeType='  # +[12357]
     base_content_url = 'https://b2b.10086.cn/b2b/main/viewNoticeContent.html?noticeBean.id='  # +id(int)
 
@@ -59,17 +63,31 @@ class BidNoticeSpider(scrapy.Spider):
             'noticeBean.endDate': ''
         }
 
-    def start_requests(self):
-        """ Start crawler """
+    def start_requests(self):  # 用start_requests()方法,代替start_urls
+        """ From Bug102，首先请求查询主页面，获取cookie，并回调到pre_parse """
+        return [scrapy.Request(
+            url=self.start_url,
+            meta={'cookiejar': 1},
+            headers=self.base_headers,
+            callback=self.pre_parse)]
+
+    def pre_parse(self, response):
+        """ 分析主HTML，提取隐藏的_qt字段，并回调parse提取Ajax数据 """
+        # for Bug102
+        qt = response.xpath("//input[@name='_qt']/@value").extract_first()  
+        self.form_data['_qt'] = qt
+        self.logger.info(u"Sucess to find key of _qt and fill in formdata，value={0}.".format(qt))
+
         return [scrapy.FormRequest(
             url=self.query_url,
             formdata=self.form_data,
             headers=self.base_headers,
+            meta={'cookiejar': response.meta['cookiejar']},     # 获取响应Cookie
             callback=self.parse
         )]
 
     def parse(self, response):
-        """ Parse """
+        """ 读取Ajax的HTML内容，并提取列表信息 """
         try:
             table = response.xpath("//table")[0]
         except IndexError:
@@ -130,6 +148,7 @@ class BidNoticeSpider(scrapy.Spider):
             url=self.query_url,
             formdata=self.form_data,
             headers=self.base_headers,
+            meta={'cookiejar': response.meta['cookiejar']},     # 获取响应Cookie
             callback=self.parse
         )
 
