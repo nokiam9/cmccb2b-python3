@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     # app.run()启动flask自带web server
     # 嵌入uWSGI后app.run()不会执行，而是引用该py的app变量，uWSGI的设置在uwsgi.ini中，port也会修改
-    app.run(host='0.0.0.0', debug=True, port=3000)
+    app.run(host='0.0.0.0', debug=False, port=3000)
 
 
 
