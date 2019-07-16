@@ -32,6 +32,16 @@
   },
   {
     "comment": "curl scrapyd:6800",
+    "schedule": "53 * * * *",
+    "command": "curl http://cm-scrapy:6800/schedule.json -d project=default -d spider=HQSupplierNotice"
+  },
+  {
+    "comment": "curl scrapyd:6800",
+    "schedule": "54 * * * *",
+    "command": "curl http://cm-scrapy:6800/schedule.json -d project=default -d spider=ProvinceSupplierNotice"
+  },
+  {
+    "comment": "curl scrapyd:6800",
     "schedule": "03 * * * *",
     "command": "curl http://cm-scrapy:6800/schedule.json -d project=default -d spider=GsGovProcurement",
     "onstart":true
