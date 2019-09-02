@@ -74,7 +74,23 @@ class BidNoticeSpider(scrapy.Spider):
     def pre_parse(self, response):
         """ 分析主HTML，提取隐藏的_qt字段，并回调parse提取Ajax数据 """
         # for Bug102
-        qt = response.xpath("//input[@name='_qt']/@value").extract_first()  
+        # qt = response.xpath("//input[@name='_qt']/@value").extract_first()  
+
+        # Bug 103: 2018-08-22 站点再次升级反爬虫策略，将qt隐藏在js脚本，并增加注释语句混淆信息
+        try:
+            lines = response.text.split("formData")[2].split("\n")      # 简单粗暴寻找关键字，并分行切割
+            qt = lines[5].split("'")[1] + lines[6].split("'")[1]        # 拼接两段字符串
+        except IndexError:
+            self.logger.error(u"Can't find _qt key in pre_paese stage, spider will abort!")
+            raise CloseSpider("qt_key_not_found") 
+        except Exception as err:
+            self.logger.error(u"Unknown error in pre_parse stage, err msg is {0}. Spider will abort!".format(err))
+            raise CloseSpider("unknown_error") 
+        finally:
+            if len(qt) == 0:
+                self.logger.error(u"_qt key is empty in pre_paese stage, spider will abort!")
+                raise CloseSpider("qt_key_empty") 
+
         self.form_data['_qt'] = qt
         self.logger.info(u"Sucess to find key of _qt and fill in formdata，value={0}.".format(qt))
 
