@@ -94,8 +94,8 @@ ITEM_PIPELINES = {
 # URI: mongodb://[username:password@]host1[:port1],...[,hostN[:portN]]][/[database][?options]]
 MONGODB_URI = 'mongodb://mongo:27017'       # 必须的，默认值mongodb://localhost:27017
 MONGODB_DATABASE = 'cmccb2b'                # 必须的，数据库名称。默认值scrapy
-MONGODB_SEPARATE_COLLECTIONS = True         # 可选的，根据spider.name设置collection，优先级高于COLLECTION
-# MONGODB_COLLECTION = 'BidNotice'          # 必须的，表空间名称，默认值items，但如果设置SEPARATE_COLLECTIONS将被忽略
+MONGODB_SEPARATE_COLLECTIONS = False         # 可选的，根据spider.name设置collection，优先级高于COLLECTION
+MONGODB_COLLECTION = 'BidNotice'          # 必须的，表空间名称，默认值items，但如果设置SEPARATE_COLLECTIONS将被忽略
 MONGODB_UNIQUE_KEY = [('nid', 1)]           # 可选的，定义唯一索引：'id', 或［('id', 1), ('title', -1)］
 MONGODB_STOP_ON_DUPLICATE = 20              # 可选的，＝0：不会停止爬取，<0：报错并复位为0
 
