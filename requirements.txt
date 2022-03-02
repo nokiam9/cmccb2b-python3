@@ -8,7 +8,7 @@ Flask-WTF==0.14.2
 Jinja2==2.10.1
 pymongo==3.6.1
 mongoengine==0.15.0
-Scrapy==1.5.0
+Scrapy==1.8.2
 pyecharts
 lxml
 MarkupSafe
